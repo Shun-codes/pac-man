@@ -1,16 +1,16 @@
 /**
  * Ce logiciel est distribué à des fins éducatives.
  *
- * Il est fourni "tel quel", sans garantie d’aucune sorte, explicite
- * ou implicite, notamment sans garantie de qualité marchande, d’adéquation
- * à un usage particulier et d’absence de contrefaçon.
- * En aucun cas, les auteurs ou titulaires du droit d’auteur ne seront
+ * Il est fourni "tel quel", sans garantie d'aucune sorte, explicite
+ * ou implicite, notamment sans garantie de qualité marchande, d'adéquation
+ * à un usage particulier et d'absence de contrefaçon.
+ * En aucun cas, les auteurs ou titulaires du droit d'auteur ne seront
  * responsables de tout dommage, réclamation ou autre responsabilité, que ce
- * soit dans le cadre d’un contrat, d’un délit ou autre, en provenance de,
+ * soit dans le cadre d'un contrat, d'un délit ou autre, en provenance de,
  * consécutif à ou en relation avec le logiciel ou son utilisation, ou avec
- * d’autres éléments du logiciel.
+ * d'autres éléments du logiciel.
  *
- * (c) 2022-2024 Romain Wallon - Université d'Artois.
+ * (c) 2022-2025 Romain Wallon - Université d'Artois.
  * Tous droits réservés.
  */
 
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La classe {@link GameMap} représente la carte du jeu du Bomberman, sur laquelle les
- * personnages se déplacent et peuvent poser des bombes.
+ * La classe {@link GameMap} représente la carte du jeu Pac-Man, sur laquelle les
+ * personnages (Pac-Man et les fantômes) se déplacent.
  *
  * @author Romain Wallon
  *
@@ -32,23 +32,23 @@ public final class GameMap {
     /**
      * Le nombre de lignes de cellules dans cette carte.
      */
-    private int height;
+    private final int height;
 
     /**
      * Le nombre de colonnes de cellules dans cette carte.
      */
-    private int width;
+    private final int width;
 
     /**
      * Les cellules qui constituent cette carte.
      */
-    private Cell[][] cells;
+    private final Cell[][] cells;
 
     /**
      * Construit une nouvelle instance de GameMap.
      *
-     * @param width Le nombre de lignes de cellules dans la map.
-     * @param height Le nombre de colonnes de cellules dans la map.
+     * @param width Le nombre de lignes de cellules dans la carte.
+     * @param height Le nombre de colonnes de cellules dans la carte.
      */
     public GameMap(int height, int width) {
         this.width = width;
@@ -110,7 +110,7 @@ public final class GameMap {
      * @throws IllegalArgumentException Si la position n'est pas sur la carte.
      */
     public Cell getAt(int row, int column) {
-        if ((row < 0) || (height <= row) || (column < 0) || (width <= column)) {
+        if (!isOnMap(row, column)) {
             throw new IllegalArgumentException("Incorrect cell location!");
         }
         return cells[row][column];
@@ -126,7 +126,7 @@ public final class GameMap {
      * @throws IllegalArgumentException Si la position n'est pas sur la carte.
      */
     public void setAt(int row, int column, Cell cell) {
-        if ((row < 0) || (height <= row) || (column < 0) || (width <= column)) {
+        if (!isOnMap(row, column)) {
             throw new IllegalArgumentException("Incorrect cell location!");
         }
         cells[row][column].replaceBy(cell);
@@ -140,17 +140,17 @@ public final class GameMap {
      * @see Cell#isEmpty()
      */
     public List<Cell> getEmptyCells() {
-        List<Cell> emptyTiles = new ArrayList<>();
+        List<Cell> emptyCells = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (cells[i][j].isEmpty()) {
-                    emptyTiles.add(cells[i][j]);
+                    emptyCells.add(cells[i][j]);
                 }
             }
         }
 
-        return emptyTiles;
+        return emptyCells;
     }
 
 }

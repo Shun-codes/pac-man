@@ -1,16 +1,16 @@
 /**
  * Ce logiciel est distribué à des fins éducatives.
  *
- * Il est fourni "tel quel", sans garantie d’aucune sorte, explicite
- * ou implicite, notamment sans garantie de qualité marchande, d’adéquation
- * à un usage particulier et d’absence de contrefaçon.
- * En aucun cas, les auteurs ou titulaires du droit d’auteur ne seront
+ * Il est fourni "tel quel", sans garantie d'aucune sorte, explicite
+ * ou implicite, notamment sans garantie de qualité marchande, d'adéquation
+ * à un usage particulier et d'absence de contrefaçon.
+ * En aucun cas, les auteurs ou titulaires du droit d'auteur ne seront
  * responsables de tout dommage, réclamation ou autre responsabilité, que ce
- * soit dans le cadre d’un contrat, d’un délit ou autre, en provenance de,
+ * soit dans le cadre d'un contrat, d'un délit ou autre, en provenance de,
  * consécutif à ou en relation avec le logiciel ou son utilisation, ou avec
- * d’autres éléments du logiciel.
+ * d'autres éléments du logiciel.
  *
- * (c) 2022-2024 Romain Wallon - Université d'Artois.
+ * (c) 2022-2025 Romain Wallon - Université d'Artois.
  * Tous droits réservés.
  */
 
@@ -24,7 +24,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 /**
- * La classe {@link Cell} représente une cellule de la carte du jeu du Bomberman.
+ * La classe {@link Cell} représente une cellule de la carte du jeu Pac-Man.
  *
  * @author Romain Wallon
  *
@@ -43,8 +43,7 @@ public final class Cell {
     private int column;
 
     /**
-     * La propriété contenant le sprite représentant le contenu de cette cellule sur la
-     * carte.
+     * La propriété contenant le sprite représentant le contenu de cette cellule sur la carte.
      */
     private final ObjectProperty<Sprite> spriteProperty = new SimpleObjectProperty<>();
 
@@ -54,13 +53,19 @@ public final class Cell {
     private final ObjectProperty<Wall> wallProperty = new SimpleObjectProperty<>();
 
     /**
+     * La propriété contenant l'image représentant cette cellule sur la carte.
+     */
+    private final ObjectBinding<Image> imageProperty =
+            Bindings.createObjectBinding(() -> spriteProperty.get().imageProperty().get(), spriteProperty);
+
+    /**
      * Crée une nouvelle instance de Cell.
      * La cellule créée est initialement vide.
      *
      * @param row La ligne où se trouve la cellule sur la carte.
      * @param column La colonne où se trouve la cellule sur la carte.
      */
-    public Cell(int row, int column) {
+    protected Cell(int row, int column) {
         this.row = row;
         this.column = column;
     }
@@ -79,7 +84,7 @@ public final class Cell {
      *
      * @param wall Le mur initialement présent sur la cellule.
      */
-    protected Cell(Wall wall) {
+    public Cell(Wall wall) {
         this.wallProperty.set(wall);
         this.spriteProperty.set(wall.getSprite());
     }
@@ -150,15 +155,6 @@ public final class Cell {
     }
 
     /**
-     * Donne la propriété correspondand à l'image de cette cellulle.
-     *
-     * @return La propriété correspondand à l'image de cette cellulle.
-     */
-    public ObjectBinding<Image> imageProperty() {
-        return Bindings.createObjectBinding(() -> spriteProperty.get().imageProperty().get(), spriteProperty);
-    }
-
-    /**
      * Donne le mur présent sur cette cellule sur la carte.
      *
      * @return Le mur présent sur cette cellule sur la carte.
@@ -172,8 +168,17 @@ public final class Cell {
      *
      * @return La propriété contenant le mur.
      */
-    public ObjectProperty<Wall> getWallProperty() {
+    public ObjectProperty<Wall> wallProperty() {
         return wallProperty;
+    }
+
+    /**
+     * Donne la propriété correspondant à l'image représentant cette cellule sur la carte.
+     *
+     * @return La propriété correspondant à l'image représentant cette cellule sur la carte.
+     */
+    public ObjectBinding<Image> imageProperty() {
+        return imageProperty;
     }
 
     /**
