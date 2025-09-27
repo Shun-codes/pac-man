@@ -19,8 +19,6 @@ package fr.univartois.butinfo.r304.pacman.model.animated;
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -83,7 +81,7 @@ public abstract class AbstractAnimated implements IAnimated {
     /**
      *
      */
-    protected final ObjectBinding<Image> image;
+    protected final ObjectProperty<Image> image;
 
     /**
      * Crée une nouvelle instance de AbstractAnimated.
@@ -100,8 +98,8 @@ public abstract class AbstractAnimated implements IAnimated {
         this.yPosition = new SimpleDoubleProperty(yPosition);
         this.destroyed = new SimpleBooleanProperty(false);
         this.sprite = new SimpleObjectProperty<>(sprite);
-        this.image = Bindings.createObjectBinding(() -> this.sprite.get().imageProperty().get(),
-                this.sprite);
+        this.image = new SimpleObjectProperty<>();
+        this.image.bind(this.sprite.get().imageProperty());
     }
 
     /*
@@ -234,6 +232,9 @@ public abstract class AbstractAnimated implements IAnimated {
     @Override
     public void setSprite(Sprite sprite) {
         this.sprite.set(sprite);
+
+        this.image.unbind();
+        this.image.bind(this.sprite.get().imageProperty());
     }
 
     /*
@@ -262,7 +263,7 @@ public abstract class AbstractAnimated implements IAnimated {
      * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#imageProperty()
      */
     @Override
-    public ObjectBinding<Image> imageProperty() {
+    public ObjectProperty<Image> imageProperty() {
         return image;
     }
 
@@ -420,6 +421,7 @@ public abstract class AbstractAnimated implements IAnimated {
      */
     @Override
     public void onDestruction() {
+        setDestroyed(true);
         sprite.get().destroy();
     }
 

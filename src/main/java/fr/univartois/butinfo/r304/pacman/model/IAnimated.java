@@ -17,7 +17,6 @@
 package fr.univartois.butinfo.r304.pacman.model;
 
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -143,7 +142,7 @@ public interface IAnimated {
      *
      * @return La propriété de cet objet correspondant à son {@link Image}.
      */
-    ObjectBinding<Image> imageProperty();
+    ObjectProperty<Image> imageProperty();
 
     /**
      * Modifie l'état de destruction de cet objet animé.
