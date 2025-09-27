@@ -77,6 +77,11 @@ public final class PacmanGame {
     private int nbGhosts;
 
     /**
+     * La liste des objets mobiles du jeu.
+     */
+    private final List<IAnimated> movingObjects = new CopyOnWriteArrayList<>();
+
+    /**
      * La liste des objets animés du jeu.
      */
     private final List<IAnimated> animatedObjects = new CopyOnWriteArrayList<>();
@@ -84,7 +89,7 @@ public final class PacmanGame {
     /**
      * L'animation du jeu, qui s'assure que les différents objets évoluent.
      */
-    private final AnimationTimer animation = new GameAnimation(animatedObjects);
+    private final AnimationTimer animation = new GameAnimation(movingObjects, animatedObjects);
 
     /**
      * Le contrôleur du jeu.
@@ -214,7 +219,7 @@ public final class PacmanGame {
             Cell cell = spawnableCells.get(RANDOM.nextInt(spawnableCells.size()));
             animated.setX(cell.getColumn() * spriteStore.getSpriteSize());
             animated.setY(cell.getRow() * spriteStore.getSpriteSize());
-            addAnimated(animated);
+            addMoving(animated);
         }
     }
 
@@ -288,6 +293,16 @@ public final class PacmanGame {
 
         // On récupère enfin la cellule à cette position dans la carte.
         return gameMap.getAt(row, column);
+    }
+
+    /**
+     * Ajoute un objet mobile dans le jeu.
+     *
+     * @param object L'objet à ajouter.
+     */
+    public void addMoving(IAnimated object) {
+        movingObjects.add(object);
+        addAnimated(object);
     }
 
     /**

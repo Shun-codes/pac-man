@@ -31,6 +31,11 @@ import javafx.animation.AnimationTimer;
 final class GameAnimation extends AnimationTimer {
 
     /**
+     * La liste des objets mobiles dans le jeu.
+     */
+    private final List<IAnimated> movingObjects;
+
+    /**
      * La liste des objets animés dans le jeu.
      */
     private final List<IAnimated> animatedObjects;
@@ -43,10 +48,12 @@ final class GameAnimation extends AnimationTimer {
     /**
      * Crée une nouvelle instance de GameAnimation.
      *
-     * @param movableObjects La liste des objets animés dans le jeu.
+     * @param movingObjects La liste des objets mobiles dans le jeu.
+     * @param animatedObjects La liste des objets animés dans le jeu.
      */
-    public GameAnimation(List<IAnimated> movableObjects) {
-        this.animatedObjects = movableObjects;
+    public GameAnimation(List<IAnimated> movingObjects, List<IAnimated> animatedObjects) {
+        this.movingObjects = movingObjects;
+        this.animatedObjects = animatedObjects;
     }
 
     /*
@@ -98,12 +105,12 @@ final class GameAnimation extends AnimationTimer {
      * collision.
      */
     private void checkCollisions() {
-        for (IAnimated movable : animatedObjects) {
-            for (IAnimated other : animatedObjects) {
-                if ((movable != other) && movable.isCollidingWith(other)) {
+        for (IAnimated moving : movingObjects) {
+            for (IAnimated animated : animatedObjects) {
+                if ((moving != animated) && moving.isCollidingWith(animated)) {
                     // On informe les deux objets qu'ils sont entrés en collision.
-                    movable.onCollisionWith(other);
-                    other.onCollisionWith(movable);
+                    moving.onCollisionWith(animated);
+                    animated.onCollisionWith(moving);
                 }
             }
         }
