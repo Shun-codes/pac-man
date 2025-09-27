@@ -43,7 +43,7 @@ public final class PacmanGame {
     /**
      * La vitesse de déplacement du joueur (en pixels/s).
      */
-    public static final int DEFAULT_SPEED = 75;
+    public static final int DEFAULT_SPEED = 150;
 
     /**
      * La largeur de la carte du jeu (en pixels).
@@ -75,6 +75,11 @@ public final class PacmanGame {
      * Le nombre de fantômes initialement dans le jeu.
      */
     private int nbGhosts;
+
+    /**
+     * Le nombre de pac-gommes initialement dans le jeu.
+     */
+    private int nbGums;
 
     /**
      * La liste des objets mobiles du jeu.
@@ -122,9 +127,11 @@ public final class PacmanGame {
     }
 
     /**
-     * Donne l'instance de {@link ISpriteStore} permettant de créer les {@link Sprite} du jeu..
+     * Donne l'instance de {@link ISpriteStore} permettant de créer les {@link Sprite} du
+     * jeu.
      *
-     * @return L'instance de {@link ISpriteStore} permettant de créer les {@link Sprite} du jeu..
+     * @return L'instance de {@link ISpriteStore} permettant de créer les {@link Sprite}
+     *         du jeu.
      */
     public ISpriteStore getSpriteStore() {
         return spriteStore;
@@ -187,7 +194,6 @@ public final class PacmanGame {
         player = null;
         animatedObjects.add(player);
         spawnAnimated(player);
-
 
         // On crée ensuite les fantômes sur la carte.
         for (int i = 0; i < nbGhosts; i++) {
@@ -336,6 +342,20 @@ public final class PacmanGame {
             animated.onDestruction();
         }
         animatedObjects.clear();
+    }
+
+    /**
+     * Indique que le joueur a mangé une pac-gomme.
+     *
+     * @param gum La pac-gomme qui a été mangée.
+     */
+    public void pacGumEaten(IAnimated gum) {
+        nbGums--;
+        removeAnimated(gum);
+
+        if (nbGums <= 0) {
+            gameOver("YOU WIN!");
+        }
     }
 
     /**
