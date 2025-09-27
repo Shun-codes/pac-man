@@ -100,7 +100,8 @@ public abstract class AbstractAnimated implements IAnimated {
         this.yPosition = new SimpleDoubleProperty(yPosition);
         this.destroyed = new SimpleBooleanProperty(false);
         this.sprite = new SimpleObjectProperty<>(sprite);
-        this.image = Bindings.createObjectBinding(() -> this.sprite.get().imageProperty().get(), this.sprite);
+        this.image = Bindings.createObjectBinding(() -> this.sprite.get().imageProperty().get(),
+                this.sprite);
     }
 
     /*
@@ -226,7 +227,9 @@ public abstract class AbstractAnimated implements IAnimated {
     /*
      * (non-Javadoc)
      *
-     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#setSprite(fr.univartois.butinfo.r304.pacman.view.Sprite)
+     * @see
+     * fr.univartois.butinfo.r304.pacman.model.IAnimated#setSprite(fr.univartois.butinfo.
+     * r304.pacman.view.Sprite)
      */
     @Override
     public void setSprite(Sprite sprite) {
@@ -383,7 +386,9 @@ public abstract class AbstractAnimated implements IAnimated {
     /*
      * (non-Javadoc)
      *
-     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#isCollidingWith(fr.univartois.butinfo.r304.pacman.model.IAnimated)
+     * @see
+     * fr.univartois.butinfo.r304.pacman.model.IAnimated#isCollidingWith(fr.univartois.
+     * butinfo.r304.pacman.model.IAnimated)
      */
     @Override
     public boolean isCollidingWith(IAnimated other) {
@@ -415,7 +420,7 @@ public abstract class AbstractAnimated implements IAnimated {
      */
     @Override
     public void onDestruction() {
-        // Par défaut, cette méthode ne fait rien.
+        sprite.get().destroy();
     }
 
     /*
