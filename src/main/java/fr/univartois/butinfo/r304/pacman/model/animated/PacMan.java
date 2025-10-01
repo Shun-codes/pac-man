@@ -20,7 +20,13 @@ import javafx.beans.property.IntegerProperty;
  * @version 0.1.0
  */
 public class PacMan extends AbstractAnimated{
+    /**
+     * L'attribut hp.
+     */
     private IntegerProperty hp; 
+    /**
+     * L'attribut score.
+     */
     private IntegerProperty score;
     /**
      * Crée une nouvelle instance de PacMan.
