@@ -40,8 +40,8 @@ public class PacMan extends AbstractAnimated{
     public PacMan(PacmanGame game, double xPosition, double yPosition, Sprite sprite, IntegerProperty hp,
             IntegerProperty score) {
         super(game, xPosition, yPosition, sprite);
-        this.hp = hp;
-        this.score = score;
+        hp.set(3);
+        score.set(0);
     }
     
     /**
@@ -69,7 +69,40 @@ public class PacMan extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(IAnimated other) {
-        // TODO Auto-generated method stub.
+        other.onCollisionWith(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.PacMan)
+     */
+    @Override
+    public void onCollisionWith(PacMan other) {
+        // je ne gère pas les collisions avec moi même
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
+     */
+    @Override
+    public void onCollisionWith(Ghost other) {
+        hp.set(hp.get()-1);
+        if (hp.get() <= 0) {
+            game.playerIsDead();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.PacGum)
+     */
+    @Override
+    public void onCollisionWith(PacGum other) {
+        score.set(score.get()+10); 
     }  
 }
 
