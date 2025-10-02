@@ -27,12 +27,19 @@ public class Ghost extends AbstractAnimated{
     /**
      * L'attribut color pour les fantômes
      */
-    GhostColor color;
+    private GhostColor color;
     
     /**
      * L'attribut temps pour la gestion du déplacement des fantômes
      */
     private long temps = 2000;
+    
+    
+    /**
+     * L'attribut SPEED pour gerer la vitesse des famtôme quand il change de direction
+     */
+    private static final double SPEED = 0.8;
+
     
     /**
      * Crée une nouvelle instance de Ghost.
@@ -41,8 +48,8 @@ public class Ghost extends AbstractAnimated{
      * @param yPosition de type {@link Double}
      * @param sprite de type {@link Sprite}
      */
-    protected Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
-        super(game, xPosition, yPosition, sprite);
+    public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites) {
+        super(game, xPosition, yPosition, sprites);
     }
 
 
@@ -147,19 +154,19 @@ public class Ghost extends AbstractAnimated{
         int random = r.nextInt(4);
         switch (random) {
             case 0:
-                setHorizontalSpeed(-delta);
+                setHorizontalSpeed(-SPEED);
                 setVerticalSpeed(0);
                 break;
             case 1:
-                setHorizontalSpeed(delta);
+                setHorizontalSpeed(SPEED);
                 setVerticalSpeed(0);
                 break;
             case 2:
-                setVerticalSpeed(-delta);
+                setVerticalSpeed(-SPEED);
                 setHorizontalSpeed(0);
                 break;
             case 3:
-                setVerticalSpeed(delta);
+                setVerticalSpeed(SPEED);
                 setHorizontalSpeed(0);
                 break;
             default:
