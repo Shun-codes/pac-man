@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import fr.univartois.butinfo.r304.pacman.model.map.CardGenerator;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
@@ -169,8 +170,17 @@ public final class PacmanGame {
      * @return La carte du jeu ayant été créée.
      */
     private GameMap createMap() {
-        // TODO Utilisez le générateur de cartes que vous avez écrit pour créer une carte.
-        return null;
+        int cellSize = spriteStore.getSpriteSize();
+
+        // Convertir les dimensions de la carte en nombre de cellules
+        int numRows = height / cellSize;
+        int numCols = width / cellSize;
+
+        CardGenerator generator = new CardGenerator();
+
+        GameMap map = generator.generate(numRows, numCols);
+
+        return map;
     }
 
     /**
