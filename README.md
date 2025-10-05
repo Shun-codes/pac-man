@@ -16,6 +16,8 @@ Vous pouvez retrouver ci-dessous les liens vers les sujets de TP vous guidant
 dans le développement de votre projet :
 
 - [Lancement du projet](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP03)
+- [Des patrons de conception dans *Pac-Man* (1)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP04)
+- [Des patrons de conception dans *Pac-Man* (2)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP05)
 
 ## Diagramme de classes
 
@@ -345,7 +347,6 @@ PacmanController o-- "1" PacmanGame
 | Fantômes vulnérables                       |                        |            |                                               |
 | Fantômes fuyants                           |                        |            |                                               |
 | Fantômes presque invulnérables             |                        |            |                                               |
-| Fantômes invulnérables                     |                        |            |                                               |
 | Fantômes invulnérables                     |                        |            |                                               |
 | Réutilisation des fantômes existants       |                        |            |                                               |
 | Ajout des méga-gommes                      |                        |            |                                               |
