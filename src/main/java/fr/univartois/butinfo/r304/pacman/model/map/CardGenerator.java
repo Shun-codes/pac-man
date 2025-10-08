@@ -16,19 +16,17 @@ import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
  *
  * @version 0.1.0
  */
-public class CardGenerator {
+public class CardGenerator implements ICardGenerator {
     
     
     private final SpriteStore spriteStore = new SpriteStore();
 
-    /**
-     * Génère une nouvelle carte de jeu de dimensions données.
+    /*
+     * (non-Javadoc)
      *
-     * @param height Le nombre de lignes de cellules.
-     * @param width  Le nombre de colonnes de cellules.
-     *
-     * @return La carte générée.
+     * @see fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator#generate(int, int)
      */
+    @Override
     public GameMap generate(int height, int width) {
         GameMap map = new GameMap(height, width);
         for (int i = 0; i < height; i++) {

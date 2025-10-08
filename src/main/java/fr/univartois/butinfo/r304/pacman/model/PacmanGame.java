@@ -27,6 +27,7 @@ import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.CardGenerator;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
+import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import javafx.animation.AnimationTimer;
@@ -179,7 +180,7 @@ public final class PacmanGame {
         int numRows = height / cellSize;
         int numCols = width / cellSize;
 
-        CardGenerator generator = new CardGenerator();
+        ICardGenerator generator = new CardGenerator();
 
         GameMap map = generator.generate(numRows, numCols);
 
