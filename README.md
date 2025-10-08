@@ -308,7 +308,7 @@ abstract class AbstractAnimated implements IAnimated {
 AbstractAnimated o-- "1" PacmanGame
 AbstractAnimated o-- "1" Sprite
 
-abstract class Pacman extends AbstractAnimated {
+class Pacman extends AbstractAnimated {
     - hp : IntegerProperty
     - score : IntegerProperty
 
