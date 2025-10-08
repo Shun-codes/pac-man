@@ -34,18 +34,17 @@ public class ChaseStrategyGhost implements IStrategyGhost{
      */
     @Override
     public void moveStrategy(Ghost ghost,long delta, PacmanGame game) {
-     // Le fantôme change de direction toutes le temps
-        changeDirection(ghost,delta,game);  
+     // Le fantôme change de direction toutes le temps delta pas utile ici 
+        changeDirection(ghost,game);  
     }
     
     /**
      * 
      * 
      * @param ghost le famtôme a déplacée
-     * @param delta la valeur selon le lequel on actualise le deplacement 
      * @param game l'instance de la game actuel
      */
-    private void changeDirection(Ghost ghost, long delta, PacmanGame game) {
+    private void changeDirection(Ghost ghost, PacmanGame game) {
         
         PacMan pacman = game.getPlayer();
         
