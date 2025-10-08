@@ -8,6 +8,8 @@
 package fr.univartois.butinfo.r304.pacman.model.map;
 
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
+import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
+import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 /**
  * Le type CardGenerator
@@ -16,19 +18,20 @@ import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
  *
  * @version 0.1.0
  */
-public class CardGenerator {
-    
-    
-    private final SpriteStore spriteStore = new SpriteStore();
+@StrategyDesignPattern(strategy = ICardGenerator.class, participant = StrategyParticipant.IMPLEMENTATION)
+public class CardGenerator implements ICardGenerator {
 
     /**
-     * Génère une nouvelle carte de jeu de dimensions données.
-     *
-     * @param height Le nombre de lignes de cellules.
-     * @param width  Le nombre de colonnes de cellules.
-     *
-     * @return La carte générée.
+     * L'attribut spriteStore
      */
+    private final SpriteStore spriteStore = new SpriteStore();
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator#generate(int, int)
+     */
+    @Override
     public GameMap generate(int height, int width) {
         GameMap map = new GameMap(height, width);
         for (int i = 0; i < height; i++) {
@@ -55,8 +58,7 @@ public class CardGenerator {
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                isBorder = (row == 0) || (row == height - 1) || (col == 0) || (col == width - 1); // haut ou bas ou gauche ou droite
-
+                isBorder = (row == 0) || (row == height - 1) || (col == 0) || (col == width - 1);
                 if (isBorder) {
                     map.setAt(row, col, createWallCell());
                 }
@@ -79,16 +81,12 @@ public class CardGenerator {
         int leftCenterGap = centerCol - margin / 2;
         int rightCenterGap = centerCol + margin / 2 - 1;
 
-        
         for (int row = 2; row < height - 2; row += margin) {
             for (int col = margin + 1; col < width - margin - 1; col++) {
-
-                
                 if (col >= leftCenterGap && col <= rightCenterGap) {
                     continue;
                 }
 
-                
                 map.setAt(row, col, createWallCell());
             }
         }
@@ -103,7 +101,7 @@ public class CardGenerator {
         Wall wall = new Wall(spriteStore.getSprite("wall"));
         return new Cell(wall);
     }
-    
+
     /**
      * Crée une nouvelle cellule contenant un mur.
      *
@@ -112,5 +110,5 @@ public class CardGenerator {
     private Cell createPathCell() {
         return new Cell(spriteStore.getSprite("path"));
     }
-}
 
+}
