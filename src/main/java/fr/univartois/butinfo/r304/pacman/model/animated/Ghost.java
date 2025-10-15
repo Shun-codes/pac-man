@@ -49,15 +49,8 @@ public class Ghost extends AbstractAnimated{
     public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color) {
         super(game, xPosition, yPosition, sprites);
         this.color = color;
-        if(this.color == GhostColor.RED) {
-            this.strategyGhost = new ChaseStrategyGhost();
-        }
-        else if ((this.color == GhostColor.PINK) || (this.color == GhostColor.BLUE) ){
-            this.strategyGhost = new SurroundStrategyGhost();
-        }
-        else {
-            this.strategyGhost = new DumbStrategyGhost();
-        }
+        this.strategyGhost = color.getMoveStrategy();
+ 
     }
 
 
@@ -68,6 +61,24 @@ public class Ghost extends AbstractAnimated{
      */
     public GhostColor getColor() {
         return color;
+    }
+    
+    /**
+     * Modifie l'attribut strategyGhost de cette instance de Ghost.
+     * 
+     * @param strategy
+     */
+    public void setStrategyGhost(IStrategyGhost strategy) {
+        this.strategyGhost = strategy;
+    }
+    
+    /**
+     * Donne l'attribut strategyGhost de cette instance de Ghost.
+     * 
+     * @return strategyGhost
+     */
+    public IStrategyGhost getStrategyGhost() {
+        return strategyGhost;
     }
 
     
