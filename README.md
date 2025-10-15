@@ -343,11 +343,11 @@ abstract class AbstractAnimated implements IAnimated {
 AbstractAnimated o-- "1" PacmanGame
 AbstractAnimated o-- "1" Sprite
 
-class Pacman extends AbstractAnimated {
+class PacMan extends AbstractAnimated {
     - hp : IntegerProperty
     - score : IntegerProperty
 
-    + Pacman(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
+    + PacMan(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
     + getHpProperty() : IntegerProperty
     + getScoreProperty() : IntegerProperty
     + onCollisionWith(other : IAnimated) : void
