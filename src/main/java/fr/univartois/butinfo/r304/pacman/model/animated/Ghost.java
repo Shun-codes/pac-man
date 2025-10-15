@@ -72,15 +72,6 @@ public class Ghost extends AbstractAnimated{
         this.strategyGhost = strategy;
     }
     
-    /**
-     * Donne l'attribut strategyGhost de cette instance de Ghost.
-     * 
-     * @return strategyGhost
-     */
-    public IStrategyGhost getStrategyGhost() {
-        return strategyGhost;
-    }
-
     
     /**
      * Modifie l'attribut color de cette instance de Ghost.
