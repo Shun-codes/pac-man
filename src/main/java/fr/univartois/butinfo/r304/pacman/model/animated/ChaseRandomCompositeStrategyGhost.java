@@ -28,7 +28,11 @@ public class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
      */
     private double temps = 5000;
 
-    private int current;
+    /**
+     * L'index de la stratégie courante
+     */
+    private int current = 0;
+    
     /*
      * (non-Javadoc)
      *
@@ -36,13 +40,15 @@ public class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
      */
     @Override
     public void moveStrategy(Ghost ghost, long delta, PacmanGame game) {
-     // le fantôme change de strategys tout les 5 secondes
+    	// Le fantôme change de stratégie toutes les 5 secondes
         if (temps <= 0) {
-            
+            current = (current + 1) % listeStrategys.length;
             temps = 5000;
         } else {
             temps -= delta;
-        }       
+        }
+        
+        listeStrategys[current].moveStrategy(ghost, delta, game);
     }
 
 }
