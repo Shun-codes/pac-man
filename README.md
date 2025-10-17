@@ -19,9 +19,9 @@ que _Developer_ pour vous permettre de travailler ensemble sur ce projet.
 Vous pouvez retrouver ci-dessous les liens vers les sujets de TP vous guidant
 dans le développement de votre projet :
 
-- [Lancement du projet](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP03)
-- [Des patrons de conception dans _Pac-Man_ (1)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP04)
-- [Des patrons de conception dans _Pac-Man_ (2)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/TP05)
+- [Lancement du projet](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/tp/TP03)
+- [Des patrons de conception dans *Pac-Man* (1)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/tp/TP04)
+- [Des patrons de conception dans *Pac-Man* (2)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/tp/TP05)
 
 ## Diagramme de classes
 
@@ -303,7 +303,7 @@ abstract class AbstractAnimated implements IAnimated {
     + self() : IAnimated
     + hashCode() : int
     + equals(obj : Object) : boolean
-}
+}    
 
 AbstractAnimated o-- "1" PacmanGame
 AbstractAnimated o-- "1" Sprite
@@ -336,25 +336,79 @@ enum GhostColor {
   PINK
   BLUE
   ORANGE
+  - moveStrategy : IStrategyGhost
+  - GhostColor(strategy : IStrategyGhost)
+  + getMoveStrategy() : IStrategyGhost
 }
 
 class Ghost extends AbstractAnimated {
+    - strategyGhost : IStrategyGhost
     - color : GhostColor
-    - temps : long
-    - {static} SPEED : double
 
     + Ghost(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
     + getColor() : GhostColor
     + setColor(color : GhostColor) : void
+    + setStrategyGhost(strategy : IStrategyGhost) : void
     + onCollisionWith(other : IAnimated) : void
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
     + onStep(delta : long) : boolean
-    - changeDirection(delta : long) : void
+}
+
+interface IStrategyGhost {
+    + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+}
+
+interface IStateGhost {
+    + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
+    + nextState() : IStateGhost
+}
+
+class ChaseStrategyGhost implements IStrategyGhost {
+    - {static} SPEED : double
+    + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+    - changeDirection(ghost : Ghost, game : PacmanGame) : void
+}
+
+class DumbStrategyGhost implements IStrategyGhost {
+    - {static} SPEED : double
+    - temps : double
+    + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+    - changeDirection(ghost : Ghost) : void
+}
+
+class SurroundStrategyGhost implements IStrategyGhost {
+    - {static} SPEED : double
+    - speedOfGhost : double
+    - stateGhost : IStateGhost
+    + SurroundStrategyGhost(speedOfGhost : int)
+    + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+}
+
+class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
+    - listeStrategys : IStrategyGhost[]
+    - temps : double
+    - current : int
+    + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+}
+
+class DistantStateGhost implements IStateGhost {
+    - temps : double
+    + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
+    + nextState() : IStateGhost
+}
+
+class ClassicStateGhost implements IStateGhost {
+    + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
+    + nextState() : IStateGhost
 }
 
 Ghost o-- "1" GhostColor
+Ghost o-- "1" IStrategyGhost
+SurroundStrategyGhost o-- "1" IStateGhost
+ChaseRandomCompositeStrategyGhost o-- "2..*" IStrategyGhost
+GhostColor o-- "1" IStrategyGhost
 
 
 ' ----------------- '
