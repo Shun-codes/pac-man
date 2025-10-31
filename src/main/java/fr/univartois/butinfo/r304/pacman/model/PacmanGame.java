@@ -235,6 +235,7 @@ public final class PacmanGame {
     public void moveUp() {
         stopMoving();
         player.setVerticalSpeed(-DEFAULT_SPEED);
+        player.setRotate(270);
     }
 
     /**
@@ -243,6 +244,7 @@ public final class PacmanGame {
     public void moveRight() {
         stopMoving();
         player.setHorizontalSpeed(DEFAULT_SPEED);
+        player.setRotate(0);
     }
 
     /**
@@ -251,6 +253,7 @@ public final class PacmanGame {
     public void moveDown() {
         stopMoving();
         player.setVerticalSpeed(DEFAULT_SPEED);
+        player.setRotate(90);
     }
 
     /**
@@ -259,6 +262,7 @@ public final class PacmanGame {
     public void moveLeft() {
         stopMoving();
         player.setHorizontalSpeed(-DEFAULT_SPEED);
+        player.setRotate(180);
     }
 
     /**
