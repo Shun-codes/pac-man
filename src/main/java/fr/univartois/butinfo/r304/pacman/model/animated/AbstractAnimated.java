@@ -59,6 +59,11 @@ public abstract class AbstractAnimated implements IAnimated {
     protected final DoubleProperty yPosition;
 
     /**
+     * La rotation appliquée à cet objet animé (en degrés).
+     */
+    protected final DoubleProperty rotate;
+
+    /**
      * La vitesse horizontale actuelle de cet objet (en pixels/s).
      */
     protected double horizontalSpeed;
@@ -96,6 +101,7 @@ public abstract class AbstractAnimated implements IAnimated {
         this.game = game;
         this.xPosition = new SimpleDoubleProperty(xPosition);
         this.yPosition = new SimpleDoubleProperty(yPosition);
+        this.rotate = new SimpleDoubleProperty(0);
         this.destroyed = new SimpleBooleanProperty(false);
         this.sprite = new SimpleObjectProperty<>(sprite);
         this.image = new SimpleObjectProperty<>();
@@ -180,6 +186,36 @@ public abstract class AbstractAnimated implements IAnimated {
     @Override
     public DoubleProperty yProperty() {
         return yPosition;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#setRotate(double)
+     */
+    @Override
+    public void setRotate(double rotate) {
+        this.rotate.set(rotate);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#getRotate()
+     */
+    @Override
+    public double getRotate() {
+        return rotate.get();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#rotateProperty()
+     */
+    @Override
+    public DoubleProperty rotateProperty() {
+        return rotate;
     }
 
     /*
