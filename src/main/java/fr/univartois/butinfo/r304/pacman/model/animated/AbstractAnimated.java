@@ -362,7 +362,7 @@ public abstract class AbstractAnimated implements IAnimated {
     public boolean onStep(long delta) {
         // On met à jour la position de l'objet sur l'axe x.
         int limitMaxX = game.getWidth() - getWidth();
-        double newX = xPosition.get() + (horizontalSpeed * delta) / 1000;
+        double newX = xPosition.get() + (getHorizontalSpeed() * delta) / 1000;
         if ((newX < 0) || (newX > limitMaxX)) {
             // L'objet a atteint la limite sur l'axe x.
             return false;
@@ -370,7 +370,7 @@ public abstract class AbstractAnimated implements IAnimated {
 
         // On met à jour la position de l'objet sur l'axe y.
         int limitMaxY = game.getHeight() - getHeight();
-        double newY = yPosition.get() + (verticalSpeed * delta) / 1000;
+        double newY = yPosition.get() + (getVerticalSpeed() * delta) / 1000;
         if ((newY < 0) || (newY > limitMaxY)) {
             // L'objet a atteint la limite sur l'axe y.
             return false;
