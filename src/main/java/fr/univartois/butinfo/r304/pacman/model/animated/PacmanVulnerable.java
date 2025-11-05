@@ -23,7 +23,8 @@ public class PacmanVulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
      */
     @Override
-    public void onCollisionWith(Ghost other) {
+    public IStatePacman onCollisionWith(PacMan pacman) {
+        return null;
         // TODO Auto-generated method stub.
         
     }
@@ -34,9 +35,12 @@ public class PacmanVulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#changeStatePacman(long)
      */
     @Override
-    public IStatePacman changeStatePacman(long time) {
-        // TODO Auto-generated method stub.
-        return null;
+    public IStatePacman changeStatePacman(long time) {        
+        //hp.set(hp.get()-1);
+        
+        //pacman.setHp(pacman.getHp()-1); // On corriger
+        
+        return new PacmanInvulnerable();
     }
     
 }
