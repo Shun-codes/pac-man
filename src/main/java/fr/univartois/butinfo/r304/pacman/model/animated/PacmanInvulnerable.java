@@ -23,7 +23,8 @@ public class PacmanInvulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
      */
     @Override
-    public void onCollisionWith(Ghost other) {
+    public IStatePacman onCollisionWith(PacMan pacman) {
+        return null;
         // TODO Auto-generated method stub.
         
     }
