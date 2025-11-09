@@ -333,6 +333,7 @@ public final class PacmanGame {
      */
     public void removeAnimated(IAnimated object) {
         animatedObjects.remove(object);
+        movingObjects.remove(object);
         object.onDespawn();
         object.onDestruction();
     }
@@ -346,6 +347,7 @@ public final class PacmanGame {
             animated.onDestruction();
         }
         animatedObjects.clear();
+        movingObjects.clear();
     }
 
     /**
