@@ -7,6 +7,8 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.view.Sprite;
+import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
@@ -18,7 +20,13 @@ import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
  * @version 0.1.0
  */
 @StateDesignPattern(state = PacmanVulnerable.class, participant = StateParticipant.IMPLEMENTATION)
-public class PacmanVulnerable implements IStatePacman{
+public class PacmanVulnerable implements IStatePacman {
+    
+    
+    /**
+     * L'attribut sprite qui gère l'apparence de pacman.
+     */
+    private Sprite sprite = null;
 
     /*
      * (non-Javadoc)
@@ -39,6 +47,19 @@ public class PacmanVulnerable implements IStatePacman{
     @Override
     public IStatePacman changeStatePacman(long time) {              
         return this;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#getSprite(fr.univartois.butinfo.r304.pacman.view.SpriteStore)
+     */
+    @Override
+    public Sprite getSprite(SpriteStore spriteStore) {
+        if (sprite == null) {
+            sprite = spriteStore.getSprite("pacman/closed", "pacman/half-open", "pacman/open", "pacman/half-open");
+        }
+        return sprite;
     }
     
 }
