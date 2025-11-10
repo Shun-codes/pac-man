@@ -7,6 +7,7 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
@@ -47,7 +48,7 @@ public class InvulnerableStateGhost implements IStateGhost{
     @Override
     public IStateGhost handleCollisionWithPacman(Ghost ghost, PacmanGame game) {
       //Volontairement vide, le fantôme ne peut pas être mangé
-        return null;        
+        return this;        
     }
 
     /*
@@ -75,6 +76,16 @@ public class InvulnerableStateGhost implements IStateGhost{
     @Override
     public IStateGhost nextState() {
         return this;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost#handleCollisionWithAnimated(fr.univartois.butinfo.r304.pacman.model.animated.Ghost, fr.univartois.butinfo.r304.pacman.model.IAnimated)
+     */
+    @Override
+    public void handleCollisionWithAnimated(Ghost ghost, IAnimated animated) {
+        animated.onCollisionWith(ghost);
     }
 
 }

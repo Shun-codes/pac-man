@@ -7,6 +7,8 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import java.util.List;
+
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
@@ -23,10 +25,10 @@ public class MegaGum extends AbstractAnimated {
     /**
      * Crée une nouvelle instance de MegaGum.
      * 
-     * @param game 
+     * @param game
      * @param xPosition
      * @param yPosition
-     * @param sprite 
+     * @param sprite
      */
     public MegaGum(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
         super(game, xPosition, yPosition, sprite);
@@ -53,6 +55,10 @@ public class MegaGum extends AbstractAnimated {
      */
     @Override
     public void onCollisionWith(PacMan other) {
+        List<Ghost> ghosts = game.getGhostList();
+        for (int i = 0; i < ghosts.size(); i++) {
+            ghosts.get(i).setState(new VulnerableStateGhost());
+        }
         super.onDestruction();
     }
 
@@ -79,7 +85,7 @@ public class MegaGum extends AbstractAnimated {
     public void onCollisionWith(PacGum other) {
         // Les megagums ne rentrent pas en collisions avec les pacgums
     }
-    
+
     /*
      * (non-Javadoc)
      *

@@ -16,6 +16,7 @@
 
 package fr.univartois.butinfo.r304.pacman.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -88,6 +89,8 @@ public final class PacmanGame {
      * Le nombre de pac-gommes initialement dans le jeu.
      */
     private int nbGums;
+    
+    private List<Ghost> ghostList = new ArrayList<>();
 
     /**
      * La liste des objets mobiles du jeu.
@@ -128,6 +131,15 @@ public final class PacmanGame {
         this.height = gameHeight;
         this.spriteStore = spriteStore;
         this.nbGhosts = nbGhosts;
+    }
+
+    /**
+     * Donne l'attribut ghostList de cette instance de PacmanGame.
+     *
+     * @return L'attribut ghostList de cette instance de PacmanGame.
+     */
+    public List<Ghost> getGhostList() {
+        return ghostList;
     }
 
     /**
@@ -242,6 +254,7 @@ public final class PacmanGame {
                     "ghosts/" + color.name().toLowerCase() + "/1",
                     "ghosts/" + color.name().toLowerCase() + "/2");
             Ghost ghost = new Ghost(this, 0, 0, ghostSprite, color);
+            ghostList.add(ghost); 
 
             ghost.setHorizontalSpeed(DEFAULT_SPEED * 0.8);
             animatedObjects.add(ghost);

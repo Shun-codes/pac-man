@@ -53,7 +53,7 @@ public class Ghost extends AbstractAnimated{
      * @param color couleur du famtôme (RED, PINK, BLUE, ORANGE)
      * @param stateGhost état du famtôme en question
      */
-    public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color, IStateGhost stateGhost) {
+    public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color) {
         super(game, xPosition, yPosition, sprites);
         this.color = color;
         this.strategyGhost = color.getMoveStrategy();
@@ -113,7 +113,7 @@ public class Ghost extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(IAnimated other) {
-        other.onCollisionWith(this);
+        stateGhost.handleCollisionWithAnimated(this, other);
     }
 
 
@@ -129,7 +129,8 @@ public class Ghost extends AbstractAnimated{
         // Volontairement vide pour l'instant car on a pas encore l'état de pac-man 
         // si il a mange mega gum
         // a faire plus tard
-        stateGhost.handleCollisionWithPacman(this, this.game);
+        setState(stateGhost.handleCollisionWithPacman(this, this.game));
+        
     }
 
 
@@ -167,7 +168,7 @@ public class Ghost extends AbstractAnimated{
     @Override
     public boolean onStep(long delta) {
         strategyGhost.moveStrategy(this,delta,game);
-        stateGhost.nextState();
+        setState(stateGhost.nextState());
         return super.onStep(delta);
     }
 

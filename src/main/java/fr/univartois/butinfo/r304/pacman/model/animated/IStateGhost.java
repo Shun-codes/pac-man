@@ -7,6 +7,7 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
@@ -49,5 +50,6 @@ public interface IStateGhost {
      */
     IStateGhost nextState();
 
+    void handleCollisionWithAnimated(Ghost ghost, IAnimated animated);
 }
 
