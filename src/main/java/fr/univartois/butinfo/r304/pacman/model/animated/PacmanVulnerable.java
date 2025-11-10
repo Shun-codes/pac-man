@@ -7,6 +7,8 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
+import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
 /**
  * Le type PacmanVulnerable
@@ -15,6 +17,7 @@ package fr.univartois.butinfo.r304.pacman.model.animated;
  *
  * @version 0.1.0
  */
+@StateDesignPattern(state = PacmanVulnerable.class, participant = StateParticipant.IMPLEMENTATION)
 public class PacmanVulnerable implements IStatePacman{
 
     /*
@@ -23,10 +26,9 @@ public class PacmanVulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
      */
     @Override
-    public IStatePacman onCollisionWith(PacMan pacman) {
-        return null;
-        // TODO Auto-generated method stub.
-        
+    public IStatePacman onCollisionWithGhost(PacMan pacman) {
+        pacman.setHp(pacman.getHpProperty().get() - 1);
+        return new PacmanInvulnerable();      
     }
 
     /*
@@ -35,12 +37,8 @@ public class PacmanVulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#changeStatePacman(long)
      */
     @Override
-    public IStatePacman changeStatePacman(long time) {        
-        //hp.set(hp.get()-1);
-        
-        //pacman.setHp(pacman.getHp()-1); // On corriger
-        
-        return new PacmanInvulnerable();
+    public IStatePacman changeStatePacman(long time) {              
+        return this;
     }
     
 }
