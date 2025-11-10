@@ -7,6 +7,8 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.view.Sprite;
+import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
@@ -24,6 +26,11 @@ public class PacmanInvulnerable implements IStatePacman{
      * L'attribut compteur permet de compter le temps d'invulnérabilité.
      */
     private long compteur = 0;
+    
+    /**
+     * L'attribut sprite qui gère l'apparence de pacman.
+     */
+    private Sprite sprite = null;
 
     /*
      * (non-Javadoc)
@@ -47,6 +54,19 @@ public class PacmanInvulnerable implements IStatePacman{
            return this;
        }
         return new PacmanVulnerable();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#getSprite()
+     */
+    @Override
+    public Sprite getSprite(SpriteStore spriteStore) {
+        if (sprite == null) {
+            sprite = spriteStore.getSprite("pacman/closed-invulnerable", "pacman/half-open-invulnerable", "pacman/open-invulnerable", "pacman/half-open-invulnerable");
+        }
+        return sprite;
     }
 
 }
