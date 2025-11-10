@@ -32,14 +32,17 @@ public interface IStateGhost {
     void moveState(Ghost ghost, long delta, double speedOfGhostState, PacmanGame game);
     
     /**
-     * La méthode flicker pour faire clignoter les fantômes quand ils sont presque vulnérables
+     *  La methode pour gerer les collisions entre pacman et les fantômes
+     * @param ghost le fantôme 
+     * @param game instance correpondant a la game qui permet d'accéder a pacman
      */
-    void flicker();
+    void handleCollisionWithPacman(Ghost ghost,PacmanGame game);
+        
     
     /**
-     * La méthode vulnerable pour rendre les fantômes vulnérables donc bleu 
+     * La méthode qui permet d'obtenir le sprite du fantôme selon son état
      */
-    void vulnerable();
+    void getSpriteGhost();
     
     /**
      * @return l'état suivant
