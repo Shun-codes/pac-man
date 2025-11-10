@@ -7,6 +7,8 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
+import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
 /**
  * Le type PacmanInvulnerable
@@ -15,7 +17,13 @@ package fr.univartois.butinfo.r304.pacman.model.animated;
  *
  * @version 0.1.0
  */
+@StateDesignPattern(state = PacmanInvulnerable.class, participant = StateParticipant.IMPLEMENTATION)
 public class PacmanInvulnerable implements IStatePacman{
+    
+    /**
+     * L'attribut compteur permet de compter le temps d'invulnérabilité.
+     */
+    private long compteur = 0;
 
     /*
      * (non-Javadoc)
@@ -23,10 +31,8 @@ public class PacmanInvulnerable implements IStatePacman{
      * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
      */
     @Override
-    public IStatePacman onCollisionWith(PacMan pacman) {
-        return null;
-        // TODO Auto-generated method stub.
-        
+    public IStatePacman onCollisionWithGhost(PacMan pacman) {
+        return this;        
     }
 
     /*
@@ -36,8 +42,11 @@ public class PacmanInvulnerable implements IStatePacman{
      */
     @Override
     public IStatePacman changeStatePacman(long time) {
-        // TODO Auto-generated method stub.
-        return null;
+       compteur += time;
+       if(compteur < 3000) { // 3 secondes d'invulnérabilité
+           return this;
+       }
+        return new PacmanVulnerable();
     }
 
 }
