@@ -369,7 +369,7 @@ interface IStatePacman {
 	+ getSprite(spriteStore : SpriteStore) : Sprite
 }
 
-class PacmanInvulnerable implement IStatePacman{
+class PacmanInvulnerable implements IStatePacman{
 	- compteur : long
 	- sprite : Sprite
 	
@@ -378,7 +378,13 @@ class PacmanInvulnerable implement IStatePacman{
 	+ getSprite(spriteStore : SpriteStore) : Sprite
 }
 
-
+class PacmanVulnerable implements IStatePacman{
+	- sprite : Sprite
+	
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+}
 
 class PacGum extends AbstractAnimated {
     + PacGum(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
