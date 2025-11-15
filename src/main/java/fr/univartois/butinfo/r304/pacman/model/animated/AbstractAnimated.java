@@ -59,6 +59,11 @@ public abstract class AbstractAnimated implements IAnimated {
     protected final DoubleProperty yPosition;
 
     /**
+     * La rotation appliquée à cet objet animé (en degrés).
+     */
+    protected final DoubleProperty rotate;
+
+    /**
      * La vitesse horizontale actuelle de cet objet (en pixels/s).
      */
     protected double horizontalSpeed;
@@ -96,6 +101,7 @@ public abstract class AbstractAnimated implements IAnimated {
         this.game = game;
         this.xPosition = new SimpleDoubleProperty(xPosition);
         this.yPosition = new SimpleDoubleProperty(yPosition);
+        this.rotate = new SimpleDoubleProperty(0);
         this.destroyed = new SimpleBooleanProperty(false);
         this.sprite = new SimpleObjectProperty<>(sprites);
         this.image = new SimpleObjectProperty<>();
@@ -180,6 +186,36 @@ public abstract class AbstractAnimated implements IAnimated {
     @Override
     public DoubleProperty yProperty() {
         return yPosition;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#setRotate(double)
+     */
+    @Override
+    public void setRotate(double rotate) {
+        this.rotate.set(rotate);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#getRotate()
+     */
+    @Override
+    public double getRotate() {
+        return rotate.get();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#rotateProperty()
+     */
+    @Override
+    public DoubleProperty rotateProperty() {
+        return rotate;
     }
 
     /*
@@ -326,7 +362,7 @@ public abstract class AbstractAnimated implements IAnimated {
     public boolean onStep(long delta) {
         // On met à jour la position de l'objet sur l'axe x.
         int limitMaxX = game.getWidth() - getWidth();
-        double newX = xPosition.get() + (horizontalSpeed * delta) / 1000;
+        double newX = xPosition.get() + (getHorizontalSpeed() * delta) / 1000;
         if ((newX < 0) || (newX > limitMaxX)) {
             // L'objet a atteint la limite sur l'axe x.
             return false;
@@ -334,7 +370,7 @@ public abstract class AbstractAnimated implements IAnimated {
 
         // On met à jour la position de l'objet sur l'axe y.
         int limitMaxY = game.getHeight() - getHeight();
-        double newY = yPosition.get() + (verticalSpeed * delta) / 1000;
+        double newY = yPosition.get() + (getVerticalSpeed() * delta) / 1000;
         if ((newY < 0) || (newY > limitMaxY)) {
             // L'objet a atteint la limite sur l'axe y.
             return false;
@@ -361,17 +397,17 @@ public abstract class AbstractAnimated implements IAnimated {
      * @return Si la nouvelle position de l'objet est sur un mur.
      */
     private boolean isOnWall(int x, int y) {
-        if (game.getCellAt(x, y).getWall() != null) {
+        if (game.getCellAt(x + MARGIN, y + MARGIN).getWall() != null) {
             // Le coin supérieur gauche de l'objet a atteint un mur.
             return true;
         }
 
-        if (game.getCellAt(x, y + getHeight() - MARGIN).getWall() != null) {
+        if (game.getCellAt(x + MARGIN, y + getHeight() - MARGIN).getWall() != null) {
             // Le coin inférieur gauche de l'objet a atteint un mur.
             return true;
         }
 
-        if (game.getCellAt(x + getWidth() - MARGIN, y).getWall() != null) {
+        if (game.getCellAt(x + getWidth() - MARGIN, y + MARGIN).getWall() != null) {
             // Le coin supérieur droit de l'objet a atteint un mur.
             return true;
         }

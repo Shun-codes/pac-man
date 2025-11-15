@@ -8,11 +8,11 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
-import java.util.Random;
-
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
+import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
+import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 
 /**
@@ -22,34 +22,43 @@ import fr.univartois.butinfo.r304.pacman.view.Sprite;
  *
  * @version 0.1.0
  */
+@StrategyDesignPattern(strategy = IStrategyGhost.class, participant = StrategyParticipant.CONTEXT)
 public class Ghost extends AbstractAnimated{
+    
+    /**
+     * L'attribut strategyGhost pour la gestion des stratégies des fantômes
+     */
+    private IStrategyGhost strategyGhost;
+    
+    
+    /**
+     * L'attribut stateGhost pour gerer les états des fantômes
+     */
+    private IStateGhost stateGhost;
     
     /**
      * L'attribut color pour les fantômes
      */
     private GhostColor color;
-    
-    /**
-     * L'attribut temps pour la gestion du déplacement des fantômes
-     */
-    private long temps = 2000;
-    
-    
-    /**
-     * L'attribut SPEED pour gerer la vitesse des famtôme quand il change de direction
-     */
-    private static final double SPEED = 75;
+      
 
     
     /**
      * Crée une nouvelle instance de Ghost.
-     * @param game de type {@link PacmanGame}
-     * @param xPosition de type {@link Double}
-     * @param yPosition de type {@link Double}
-     * @param sprite de type {@link Sprite}
+     * 
+     * @param game l'instance du jeu
+     * @param xPosition la position sur l'axe horizontal du fantôme
+     * @param yPosition la position sur l'axe vertical du famtôme
+     * @param sprites les sprites du fantôme
+     * @param color couleur du famtôme (RED, PINK, BLUE, ORANGE)
+     * @param stateGhost état du famtôme en question
      */
-    public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites) {
+    public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color) {
         super(game, xPosition, yPosition, sprites);
+        this.color = color;
+        this.strategyGhost = color.getMoveStrategy();
+        this.stateGhost = new InvulnerableStateGhost();
+ 
     }
 
 
@@ -61,7 +70,7 @@ public class Ghost extends AbstractAnimated{
     public GhostColor getColor() {
         return color;
     }
-
+    
     
     /**
      * Modifie l'attribut color de cette instance de Ghost.
@@ -71,7 +80,28 @@ public class Ghost extends AbstractAnimated{
     public void setColor(GhostColor color) {
         this.color = color;
     }
-
+    
+    /**
+     * Modifie l'attribut strategyGhost de cette instance de Ghost.
+     * 
+     * @param strategy permet de set la strategy utilise
+     */
+    public void setStrategyGhost(IStrategyGhost strategy) {
+        this.strategyGhost = strategy;
+    }
+    
+    /**
+     * Modifie l'attribut color de cette instance de Ghost.
+     * 
+     * @param stateGhost attribut correspondant a l'état en cours
+     *
+     */
+    public void setState(IStateGhost stateGhost) {
+        this.stateGhost = stateGhost;
+        stateGhost.getSpriteGhost(this);
+        stateGhost.moveState(this, game);
+    }
+    
 
     /*
      * Gestion des collisions avec les autres objets animés.
@@ -83,7 +113,7 @@ public class Ghost extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(IAnimated other) {
-        other.onCollisionWith(this);
+        stateGhost.handleCollisionWithAnimated(this, other);
     }
 
 
@@ -99,6 +129,8 @@ public class Ghost extends AbstractAnimated{
         // Volontairement vide pour l'instant car on a pas encore l'état de pac-man 
         // si il a mange mega gum
         // a faire plus tard
+        setState(stateGhost.handleCollisionWithPacman(this, this.game));
+        
     }
 
 
@@ -135,44 +167,20 @@ public class Ghost extends AbstractAnimated{
      */
     @Override
     public boolean onStep(long delta) {
-        // Le fantôme change de direction toutes les 2 secondes 
-        if (temps <= 0) {
-            changeDirection(delta);
-            temps = 2000;
-        } else {
-            temps -= delta;
-        }
+        strategyGhost.moveStrategy(this,delta,game);
+        setState(stateGhost.nextState());
         return super.onStep(delta);
     }
 
 
-    /**
-     * @param delta le temps écoulé depuis la dernière mise à jour en millisecondes
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.MegaGum)
      */
-    private void changeDirection(long delta) {
-        Random r = new Random();
-        int random = r.nextInt(4);
-        switch (random) {
-            case 0:
-                setHorizontalSpeed(-SPEED);
-                setVerticalSpeed(0);
-                break;
-            case 1:
-                setHorizontalSpeed(SPEED);
-                setVerticalSpeed(0);
-                break;
-            case 2:
-                setVerticalSpeed(-SPEED);
-                setHorizontalSpeed(0);
-                break;
-            case 3:
-                setVerticalSpeed(SPEED);
-                setHorizontalSpeed(0);
-                break;
-            default:
-                break;
-        }
-        
+    @Override
+    public void onCollisionWith(MegaGum other) {
+        //
     }
 
 }

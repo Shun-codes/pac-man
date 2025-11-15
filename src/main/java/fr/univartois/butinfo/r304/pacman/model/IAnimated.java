@@ -17,6 +17,7 @@
 package fr.univartois.butinfo.r304.pacman.model;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
@@ -90,6 +91,27 @@ public interface IAnimated {
      * @return La propriété liée à la position en y de cet objet animé.
      */
     DoubleProperty yProperty();
+
+    /**
+     * Modifie la rotation de cet objet animé (en degrés).
+     *
+     * @param rotate La nouvelle rotation de cet objet animé.
+     */
+    void setRotate(double rotate);
+
+    /**
+     * Donne la rotation de cet objet animé (en degrés).
+     *
+     * @return La rotation de cet objet animé.
+     */
+    double getRotate();
+
+    /**
+     * Donne la propriété liée à la rotation de cet objet animé (en degrés).
+     *
+     * @return La propriété liée à la rotation de cet objet animé.
+     */
+    DoubleProperty rotateProperty();
 
     /**
      * Modifie la vitesse horizontale de cet objet animé.
@@ -218,7 +240,8 @@ public interface IAnimated {
      * objet.
      * Lors de l'appel à cette méthode, il est garanti que les deux objets sont entrés en
      * collision.
-     * Il n'est en particulier pas nécessaire d'utiliser {@link #isCollidingWith(IAnimated)}
+     * Il n'est en particulier pas nécessaire d'utiliser
+     * {@link #isCollidingWith(IAnimated)}
      * pour s'en assurer.
      *
      * @param other L'objet avec lequel cet objet est entré en collision.
@@ -262,13 +285,26 @@ public interface IAnimated {
     void onCollisionWith(PacGum other);
     
     /**
+     * Modifie l'état de cet objet lorsque celui-ci est entré en collision avec un autre
+     * objet.
+     * Lors de l'appel à cette méthode, il est garanti que les deux objets sont entrés en
+     * collision.
+     * Il n'est en particulier pas nécessaire d'utiliser {@link #isCollidingWith(IAnimated)}
+     * pour s'en assurer.
+     *
+     * @param other L'objet avec lequel cet objet est entré en collision.
+     */
+    void onCollisionWith(MegaGum other);
+    
+    /**
      * Réinitialise ou libère certaines ressources lorsque cet objet animé est retiré de
      * l'affichage, sans toutefois être retiré du jeu.
      */
     void onDespawn();
 
     /**
-     * Réinitialise ou libère certaines ressources lorsque cet objet animé est retiré du jeu.
+     * Réinitialise ou libère certaines ressources lorsque cet objet animé est retiré du
+     * jeu.
      */
     void onDestruction();
 
