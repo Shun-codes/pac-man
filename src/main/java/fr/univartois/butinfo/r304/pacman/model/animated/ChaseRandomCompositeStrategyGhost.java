@@ -8,6 +8,7 @@
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.dpprocessor.designpatterns.composite.CompositeDesignPattern;
 
 /**
  * Le type ChaseRandomComponentGhost
@@ -16,12 +17,13 @@ import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
  *
  * @version 0.1.0
  */
+@CompositeDesignPattern(IStrategyGhost.class)
 public class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
     
     /**
      * Liste des strategie a alternée pour les fantômes
      */
-    private IStrategyGhost[] listeStrategys  = {new ChaseStrategyGhost(), new DumbStrategyGhost()};
+    private IStrategyGhost[] listeStrategys  = {new ChaseStrategyGhost(75), new DumbStrategyGhost()};
 
     /**
      * L'attribut temps pour actualise tout les 5 secondes

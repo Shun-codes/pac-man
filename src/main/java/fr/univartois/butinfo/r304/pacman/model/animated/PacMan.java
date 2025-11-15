@@ -146,5 +146,16 @@ public class PacMan extends AbstractAnimated{
     public IntegerProperty getHp() {
         return hp;
     }
+    
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.IAnimated#onCollisionWith(fr.univartois.butinfo.r304.pacman.model.animated.PacGum)
+     */
+    @Override
+    public void onCollisionWith(MegaGum other) {
+        score.set(score.get()+50); 
+        game.megaGumEaten(other);
+    }
 }
 
