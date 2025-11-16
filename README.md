@@ -259,6 +259,7 @@ interface IAnimated {
     + {abstract} onCollisionWith(other : PacMan) : void
     + {abstract} onCollisionWith(other : Ghost) : void
     + {abstract} onCollisionWith(other : PacGum) : void
+    + {abstract} onCollisionWith(other : MegaGum) : void
     + {abstract} onDespawn() : void
     + {abstract} onDestruction() : void
     + {abstract} self() : IAnimated
@@ -360,6 +361,7 @@ class PacMan extends AbstractAnimated {
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
     + onStep(delta : long) : boolean
 }
 
@@ -392,7 +394,18 @@ class PacGum extends AbstractAnimated {
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
 }
+
+class MegaGum extends AbstractAnimated {
+    + MegaGum(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
+    + onCollisionWith(other : IAnimated) : void
+    + onCollisionWith(other : PacMan) : void
+    + onCollisionWith(other : Ghost) : void
+    + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
+}
+
 
 
 enum GhostColor {
@@ -585,20 +598,20 @@ PacmanController o-- "1" PacmanGame
 
 | Fonctionnalité                       | Patron de Conception ? | Terminée ? | Auteur(s) |
 | ------------------------------------ | ---------------------- | ---------- | --------- |
-| Pac-Man vulnérable                   |                        |            |           |
-| Pac-Man invulnérable                 |                        |            |           |
-| Fantômes vulnérables                 |                        |            |           |
-| Fantômes fuyants                     |                        |            |           |
-| Fantômes presque invulnérables       |                        |            |           |
-| Fantômes invulnérables               |                        |            |           |
-| Réutilisation des fantômes existants |                        |            |           |
-| Ajout des méga-gommes                |                        |            |           |
+| Pac-Man vulnérable                   | état                   |  oui       | romain    |
+| Pac-Man invulnérable                 | état                   |  oui       | romain    |
+| Fantômes vulnérables                 | état                   |  oui       | shun      |
+| Fantômes fuyants                     | état                   |  oui       | simon     |
+| Fantômes presque invulnérables       | état                   |  oui       | simon     |
+| Fantômes invulnérables               | état                   |  oui       | shun      |
+| Réutilisation des fantômes existants |                        |  oui       | shun      |
+| Ajout des méga-gommes                |                        |  oui       | timothée  |
 
 ### Jalon n°4 - TP n°6
 
 | Fonctionnalité                                       | Patron de Conception ? | Terminée ? | Auteur(s)                                     |
 | ---------------------------------------------------- | ---------------------- | ---------- | --------------------------------------------- |
-| Définition d'un seul `SpriteStore`                 |                        |            |                                               |
+| Définition d'un seul `SpriteStore`                   |                        |            |                                               |
 | Définition d'une seule instance quand c'est possible |                        |            |                                               |
 | Ajout des bonus de vitesse sur Pac-Man               |                        |            |                                               |
 | Ajout des bonus de vitesse sur les fantômes          |                        |            |                                               |
