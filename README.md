@@ -259,6 +259,7 @@ interface IAnimated {
     + {abstract} onCollisionWith(other : PacMan) : void
     + {abstract} onCollisionWith(other : Ghost) : void
     + {abstract} onCollisionWith(other : PacGum) : void
+    + {abstract} onCollisionWith(other : MegaGum) : void
     + {abstract} onDespawn() : void
     + {abstract} onDestruction() : void
     + {abstract} self() : IAnimated
@@ -348,16 +349,44 @@ AbstractAnimated o-- "1" Sprite
 class PacMan extends AbstractAnimated {
     - hp : IntegerProperty
     - score : IntegerProperty
+    - vulnerabilities : IStatePacman
+    - spriteStore : SpriteStore
 
     + PacMan(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
     + getHpProperty() : IntegerProperty
     + getScoreProperty() : IntegerProperty
+    + getHp() : IntegerProperty
+    + setHp(hp : int) : void
     + onCollisionWith(other : IAnimated) : void
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
+    + onStep(delta : long) : boolean
 }
 
+interface IStatePacman {
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+}
+
+class PacmanInvulnerable implements IStatePacman{
+	- compteur : long
+	- sprite : Sprite
+	
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+}
+
+class PacmanVulnerable implements IStatePacman{
+	- sprite : Sprite
+	
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+}
 
 class PacGum extends AbstractAnimated {
     + PacGum(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
@@ -365,7 +394,18 @@ class PacGum extends AbstractAnimated {
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
 }
+
+class MegaGum extends AbstractAnimated {
+    + MegaGum(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
+    + onCollisionWith(other : IAnimated) : void
+    + onCollisionWith(other : PacMan) : void
+    + onCollisionWith(other : Ghost) : void
+    + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
+}
+
 
 
 enum GhostColor {
@@ -378,18 +418,21 @@ enum GhostColor {
   + getMoveStrategy() : IStrategyGhost
 }
 
-class Ghost extends AbstractAnimated {
+class Ghost extends AbstractAnimated implements IAnimated {
     - strategyGhost : IStrategyGhost
+    - stateGhost : IStateGhost
     - color : GhostColor
 
-    + Ghost(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
+    + Ghost(game : PacmanGame, xPosition : double, yPosition : double, sprites : Sprite, color : GhostColor)
     + getColor() : GhostColor
     + setColor(color : GhostColor) : void
     + setStrategyGhost(strategy : IStrategyGhost) : void
+    + setState(stateGhost : IStateGhost) : void
     + onCollisionWith(other : IAnimated) : void
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
+    + onCollisionWith(other : MegaGum) : void
     + onStep(delta : long) : boolean
 }
 
@@ -397,7 +440,7 @@ interface IStrategyGhost {
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
 }
 
-interface IStateGhost {
+interface IStateGhostMove {
     + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
     + nextState() : IStateGhost
 }
@@ -439,6 +482,56 @@ class DistantStateGhost implements IStateGhost {
 class ClassicStateGhost implements IStateGhost {
     + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
     + nextState() : IStateGhost
+}
+
+interface IStateGhost {
+    + moveState(ghost : Ghost, game : PacmanGame) : void
+    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
+    + getSpriteGhost(ghost : Ghost) : void
+    + nextState() : IStateGhost
+    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+class FleeingStateGhost implements IStateGhost {
+    - time : double = 5000
+    - spritesGhost : Sprite
+    - SPEED : double = -80
+    + moveState(ghost : Ghost, game : PacmanGame) : void
+    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
+    + getSpriteGhost(ghost : Ghost) : void
+    + nextState() : IStateGhost
+    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+class InvulnerableStateGhost implements IStateGhost {
+    - spritesGhost : Sprite
+    + moveState(ghost : Ghost, game : PacmanGame) : void
+    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
+    + getSpriteGhost(ghost : Ghost) : void
+    + nextState() : IStateGhost
+    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+class NearlyInvulnerableStateGhost implements IStateGhost {
+    - time : double = 5000
+    - spritesGhost : Sprite
+    - SPEED : double = -60
+    + moveState(ghost : Ghost, game : PacmanGame) : void
+    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
+    + getSpriteGhost(ghost : Ghost) : void
+    + nextState() : IStateGhost
+    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+class VulnerableStateGhost implements IStateGhost {
+    - time : double = 15000
+    - spritesGhost : Sprite
+    - SPEED : double = -60
+    + moveState(ghost : Ghost, game : PacmanGame) : void
+    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
+    + getSpriteGhost(ghost : Ghost) : void
+    + nextState() : IStateGhost
+    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
 }
 
 Ghost o-- "1" GhostColor
@@ -505,20 +598,20 @@ PacmanController o-- "1" PacmanGame
 
 | Fonctionnalité                       | Patron de Conception ? | Terminée ? | Auteur(s) |
 | ------------------------------------ | ---------------------- | ---------- | --------- |
-| Pac-Man vulnérable                   |                        |            |           |
-| Pac-Man invulnérable                 |                        |            |           |
-| Fantômes vulnérables                 |                        |            |           |
-| Fantômes fuyants                     |                        |            |           |
-| Fantômes presque invulnérables       |                        |            |           |
-| Fantômes invulnérables               |                        |            |           |
-| Réutilisation des fantômes existants |                        |            |           |
-| Ajout des méga-gommes                |                        |            |           |
+| Pac-Man vulnérable                   | état                   |  oui       | romain    |
+| Pac-Man invulnérable                 | état                   |  oui       | romain    |
+| Fantômes vulnérables                 | état                   |  oui       | shun      |
+| Fantômes fuyants                     | état                   |  oui       | simon     |
+| Fantômes presque invulnérables       | état                   |  oui       | simon     |
+| Fantômes invulnérables               | état                   |  oui       | shun      |
+| Réutilisation des fantômes existants |                        |  oui       | shun      |
+| Ajout des méga-gommes                |                        |  oui       | timothée  |
 
 ### Jalon n°4 - TP n°6
 
 | Fonctionnalité                                       | Patron de Conception ? | Terminée ? | Auteur(s)                                     |
 | ---------------------------------------------------- | ---------------------- | ---------- | --------------------------------------------- |
-| Définition d'un seul `SpriteStore`                 |                        |            |                                               |
+| Définition d'un seul `SpriteStore`                   |                        |            |                                               |
 | Définition d'une seule instance quand c'est possible |                        |            |                                               |
 | Ajout des bonus de vitesse sur Pac-Man               |                        |            |                                               |
 | Ajout des bonus de vitesse sur les fantômes          |                        |            |                                               |

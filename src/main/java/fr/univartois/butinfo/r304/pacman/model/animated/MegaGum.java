@@ -1,34 +1,36 @@
 /**
  * Ce fichier fait partie du projet projet-2025-2026.
  *
- * (c) 2025 simon.cohet
+ * (c) 2025 timothee.gros
  * Tous droits réservés.
  */
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
+
+import java.util.List;
 
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 
 /**
- * Le type PacGum
+ * Le type MegaGum
  *
- * @author simon.cohet
+ * @author timothee.gros
  *
  * @version 0.1.0
  */
-public class PacGum extends AbstractAnimated {
+public class MegaGum extends AbstractAnimated {
 
     /**
-     * Crée une nouvelle instance de PacGum.
+     * Crée une nouvelle instance de MegaGum.
      * 
-     * @param game 
+     * @param game
      * @param xPosition
      * @param yPosition
-     * @param sprite 
+     * @param sprite
      */
-    public PacGum(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
+    public MegaGum(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
         super(game, xPosition, yPosition, sprite);
     }
 
@@ -53,6 +55,10 @@ public class PacGum extends AbstractAnimated {
      */
     @Override
     public void onCollisionWith(PacMan other) {
+        List<Ghost> ghosts = game.getGhostList();
+        for (int i = 0; i < ghosts.size(); i++) {
+            ghosts.get(i).setState(new VulnerableStateGhost());
+        }
         super.onDestruction();
     }
 
@@ -65,7 +71,7 @@ public class PacGum extends AbstractAnimated {
      */
     @Override
     public void onCollisionWith(Ghost other) {
-        // Les fantomes ignorent les pacgums
+        // Les fantomes ignorent les megagums
     }
 
     /*
@@ -77,9 +83,9 @@ public class PacGum extends AbstractAnimated {
      */
     @Override
     public void onCollisionWith(PacGum other) {
-        // Les pacgum ne rentrent pas en collisions les unes avec les autres
+        // Les megagums ne rentrent pas en collisions avec les pacgums
     }
-    
+
     /*
      * (non-Javadoc)
      *
@@ -89,7 +95,7 @@ public class PacGum extends AbstractAnimated {
      */
     @Override
     public void onCollisionWith(MegaGum other) {
-        // Les pacgums ne rentrent pas en collisions avec les megagums
+        // Les megagum ne rentrent pas en collisions les unes avec les autres
     }
 
 }
