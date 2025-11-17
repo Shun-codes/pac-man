@@ -35,6 +35,11 @@ public class PacMan extends AbstractAnimated{
     private IntegerProperty score;
     
     /**
+     * Le multiplicateur de score de pacman lorsqu'il mange une pacgum
+     */
+    private double score_mult;
+    
+    /**
      * L'attribut vulnerabilities.
      */
     private IStatePacman vulnerabilities = new PacmanVulnerable();  
@@ -116,7 +121,7 @@ public class PacMan extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(PacGum other) {
-        score.set(score.get()+10); 
+        score.set(score.get()+(int)Math.round(10*score_mult)); 
         game.pacGumEaten(other);
     }
     
@@ -154,7 +159,7 @@ public class PacMan extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(MegaGum other) {
-        score.set(score.get()+50); 
+        score.set(score.get()+(int)Math.round(50*score_mult)); 
         game.megaGumEaten(other);
     }
     
@@ -165,7 +170,7 @@ public class PacMan extends AbstractAnimated{
      */
     @Override
     public void onCollisionWith(Bonus other) {
-        // TODO
+        other.handleBonus();
     }
 }
 
