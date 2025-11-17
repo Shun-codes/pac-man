@@ -32,10 +32,15 @@ public class ChaseStrategyGhost implements IStrategyGhost{
     public ChaseStrategyGhost(double speed) {
         this.speed = speed;
     }
-
+    
     /**
-     * 
+     * Modifie l'attribut speed de cette instance de ChaseStrategyGhost.
+     *
+     * @param speed La nouvelle valeur de l'attribut speed pour cette instance de ChaseStrategyGhost.
      */
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
     
     /*
      * (non-Javadoc)

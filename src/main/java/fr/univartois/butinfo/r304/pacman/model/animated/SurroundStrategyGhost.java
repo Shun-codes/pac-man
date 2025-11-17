@@ -23,10 +23,6 @@ import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 @StrategyDesignPattern(strategy = IStrategyGhost.class, participant = StrategyParticipant.IMPLEMENTATION)
 @StateDesignPattern(state = IStateGhostMove.class, participant = StateParticipant.IMPLEMENTATION)
 public class SurroundStrategyGhost implements IStrategyGhost, IStateGhostMove{
-    /**
-     * L'attribut SPEED pour gerer la vitesse des famtôme quand il change de direction
-     */
-    private static final double SPEED = 75;
     
     /**
      * L'attribut speedOfGhost qui permet de gerer la direction du fantôme pour le diriger dans le coin correspondant a sa couleur
@@ -47,6 +43,17 @@ public class SurroundStrategyGhost implements IStrategyGhost, IStateGhostMove{
         this.speedOfGhost = speedOfGhost;
         this.stateGhost = new DistantStateGhost();
     }
+    
+    
+    /**
+     * Modifie l'attribut speedOfGhost de cette instance de SurroundStrategyGhost.
+     *
+     * @param speedOfGhost La nouvelle valeur de l'attribut speedOfGhost pour cette instance de SurroundStrategyGhost.
+     */
+    public void setSpeedOfGhost(double speedOfGhost) {
+        this.speedOfGhost = speedOfGhost;
+    }
+
 
     /*
      * (non-Javadoc)
