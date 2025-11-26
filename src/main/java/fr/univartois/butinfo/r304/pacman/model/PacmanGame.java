@@ -22,19 +22,15 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
-import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
 import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
-import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryParticipant;
-import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
-import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -225,22 +221,15 @@ public final class PacmanGame {
         
         animatedObjects.add(player);
         spawnAnimated(player);
-
-        // On crée ensuite les fantômes sur la carte.
-        GhostColor[] colors = GhostColor.values();
+        
+        ghostList = factory.createGhost(this);
         for (int i = 0; i < nbGhosts; i++) {
-            GhostColor color = colors[i % colors.length];
-
-            Sprite ghostSprite = spriteStore.getSprite(
-                    "ghosts/" + color.name().toLowerCase() + "/1",
-                    "ghosts/" + color.name().toLowerCase() + "/2");
-            Ghost ghost = new Ghost(this, 0, 0, ghostSprite, color);
-            ghostList.add(ghost); 
-
+            Ghost ghost = ghostList.get(i);
             ghost.setHorizontalSpeed(DEFAULT_SPEED * 0.8);
             animatedObjects.add(ghost);
             spawnAnimated(ghost);
         }
+        
 
         List<Cell> emptyCells = gameMap.getEmptyCells();
         nbGums = emptyCells.size(); // mettre à jour le nombre de pac-gommes
