@@ -14,7 +14,7 @@ import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 /**
- * Le type surroundStrategy
+ * La classe SurroundStrategyGhost, la stratégie de déplacement des fantômes qui les dirigent vers les coins selon leur couleur
  *
  * @author shun.lembrez
  *
@@ -37,22 +37,13 @@ public class SurroundStrategyGhost implements IStrategyGhost, IStateGhostMove{
     /**
      * Constructeur qui permet d'initialisée la vitesse et l'état du fantôme
      * 
-     * @param speedOfGhost 
+     * @param speedOfGhost la vitesse du fantôme
      */
     public SurroundStrategyGhost(int speedOfGhost) {
         this.speedOfGhost = speedOfGhost;
         this.stateGhost = new DistantStateGhost();
     }
     
-    
-    /**
-     * Modifie l'attribut speedOfGhost de cette instance de SurroundStrategyGhost.
-     *
-     * @param speedOfGhost La nouvelle valeur de l'attribut speedOfGhost pour cette instance de SurroundStrategyGhost.
-     */
-    public void setSpeedOfGhost(double speedOfGhost) {
-        this.speedOfGhost = speedOfGhost;
-    }
 
 
     /*
@@ -84,6 +75,17 @@ public class SurroundStrategyGhost implements IStrategyGhost, IStateGhostMove{
     @Override
     public IStateGhostMove nextState() {
         return stateGhost.nextState();
+    }
+
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStrategyGhost#setSpeed(double)
+     */
+    @Override
+    public void setSpeed(double speed) {
+        this.speedOfGhost = speed;
     }
 
     

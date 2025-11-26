@@ -14,7 +14,7 @@ import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 /**
- * Le type DumbStrategy
+ * La classe DumbStrategyGhost pour la stratégie de poursuite des fantômes en mode random
  *
  * @author shun.lembrez
  *
@@ -41,6 +41,7 @@ public class DumbStrategyGhost implements IStrategyGhost {
      *
      * @param speed La nouvelle valeur de l'attribut speed pour cette instance de DumbStrategyGhost.
      */
+    @Override
     public void setSpeed(double speed) {
         this.speed = speed;
     }
