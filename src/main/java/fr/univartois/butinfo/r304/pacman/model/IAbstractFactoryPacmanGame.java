@@ -39,9 +39,11 @@ public interface IAbstractFactoryPacmanGame {
     
     /**
      * @param game Récupération de l'instance du jeu pour créer des méga-gomme
+     * @param cellColumn la colonne de la cellule
+     * @param cellRow la ligne de la cellule
      * @return Une instance de MegaGum
      */
-    IAnimated createGum(PacmanGame game);
+    IAnimated createGum(PacmanGame game, int cellColumn, int cellRow);
     
     /**
      * @param width la taille en largeur de la map
