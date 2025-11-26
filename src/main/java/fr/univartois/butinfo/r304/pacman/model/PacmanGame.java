@@ -27,6 +27,7 @@ import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
 import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
+import fr.univartois.butinfo.r304.pacman.model.animated.PacmanSpeedBonus;
 import fr.univartois.butinfo.r304.pacman.model.animated.ScoreBonus;
 import fr.univartois.butinfo.r304.pacman.model.animated.SlowGhostBonus;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
@@ -282,20 +283,27 @@ public final class PacmanGame {
         for (int i = 0; i < emptyCells.size(); i++) {
             Cell cell = emptyCells.get(i);
             int r = RANDOM.nextInt(1000);
-            if (r <= 5) {
+            if (r <= 4) {
                 ScoreBonus scorebonus = new ScoreBonus(
                         this,
                         cell.getColumn() * spriteStore.getSpriteSize(),
                         cell.getRow() * spriteStore.getSpriteSize(),
                         spriteStore.getSprite("bonus/cherries"));
                 addAnimated(scorebonus);
-            } else if (r <= 10) {
+            } else if (r <= 7) {
                 SlowGhostBonus slowghostbonus = new SlowGhostBonus(
                         this,
                         cell.getColumn() * spriteStore.getSpriteSize(),
                         cell.getRow() * spriteStore.getSpriteSize(),
                         spriteStore.getSprite("bonus/melon"));
                 addAnimated(slowghostbonus);
+            } else if (r <= 10) {
+                PacmanSpeedBonus pacmanspeedbonus = new PacmanSpeedBonus(
+                        this,
+                        cell.getColumn() * spriteStore.getSpriteSize(),
+                        cell.getRow() * spriteStore.getSpriteSize(),
+                        spriteStore.getSprite("bonus/galaxian"));
+                addAnimated(pacmanspeedbonus);
             } else if (r <= 25) {
                 MegaGum megagum = new MegaGum(
                         this,
