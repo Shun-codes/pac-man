@@ -50,7 +50,7 @@ public class BonusComposite implements IAnimated {
      * @param yPosition correspondant a la position en y de ce bonus
      * @param sprites les sprites de ce bonus
      */
-    protected BonusComposite(PacmanGame game, double xPosition, double yPosition, Sprite sprites) {
+    public BonusComposite(PacmanGame game, double xPosition, double yPosition, Sprite sprites) {
         super();
         bonuses = new Bonus[] {new ScoreBonus(game, xPosition, yPosition, sprites),
                 new PacmanSpeedBonus(game, xPosition, yPosition, sprites),

@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Bonus;
+import fr.univartois.butinfo.r304.pacman.model.animated.BonusComposite;
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
 import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
 import fr.univartois.butinfo.r304.pacman.model.animated.InvulnerableBonus;
@@ -312,6 +313,13 @@ public final class PacmanGame {
                         cell.getRow() * spriteStore.getSpriteSize(),
                         spriteStore.getSprite("bonus/orange"));
                 addAnimated(invulnerablebonus);
+            } else if (r <= 10) {
+                BonusComposite bonuscomposite = new BonusComposite(
+                        this,
+                        cell.getColumn() * spriteStore.getSpriteSize(),
+                        cell.getRow() * spriteStore.getSpriteSize(),
+                        spriteStore.getSprite("bonus/key"));
+                addAnimated(bonuscomposite);
             } else if (r <= 25) {
                 MegaGum megagum = new MegaGum(
                         this,
