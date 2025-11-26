@@ -76,7 +76,7 @@ public class SlowStateGhost implements IStateGhost{
     public void getSpriteGhost(Ghost ghost) {
         //redonne les sprites de bases
         if(spritesGhost == null) {
-            spritesGhost = new SpriteStore().getSprite(
+            spritesGhost = SpriteStore.getInstance().getSprite(
                     "ghosts/" + ghost.getColor().name().toLowerCase() + "/1",
                     "ghosts/" + ghost.getColor().name().toLowerCase() + "/2");
         }

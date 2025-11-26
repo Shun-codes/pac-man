@@ -7,6 +7,7 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
@@ -69,5 +70,14 @@ public class PacmanInvulnerable implements IStatePacman{
         return sprite;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#handleState()
+     */
+    @Override
+    public void handleState(PacmanGame game) {
+        game.getPlayer().setScoreMult(1);
+    }
 }
 
