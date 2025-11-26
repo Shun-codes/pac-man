@@ -7,14 +7,17 @@
 
 package fr.univartois.butinfo.r304.pacman.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorEmpty;
 import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorFixed;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
 import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
+import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryParticipant;
@@ -37,6 +40,16 @@ public class ConcreteFactoryPacmanGame implements IAbstractFactoryPacmanGame {
      * Le générateur de cartes
      */
     private ICardGenerator generator = new CardGeneratorFixed(CardGeneratorEmpty.getInstance());
+        
+    /**
+     * L'attribut NB_GHOSTS le nombre de fantômes dans le jeu
+     */
+    private static final int NB_GHOSTS = 4;
+    
+    /**
+     * L'attribut spriteStore les sprites du jeu
+     */
+    private SpriteStore spriteStore = SpriteStore.getInstance();
      
     /*
      * (non-Javadoc)
@@ -56,8 +69,18 @@ public class ConcreteFactoryPacmanGame implements IAbstractFactoryPacmanGame {
      */
     @Override
     public List<Ghost> createGhost(PacmanGame game) {
-        // TODO Auto-generated method stub.
-        return null;
+        List <Ghost> ghostList = new ArrayList<>();
+        GhostColor[] colors = GhostColor.values();
+        for (int i = 0; i < NB_GHOSTS; i++) {
+            GhostColor color = colors[i % colors.length];
+
+            Sprite ghostSprite = spriteStore.getSprite(
+                    "ghosts/" + color.name().toLowerCase() + "/1",
+                    "ghosts/" + color.name().toLowerCase() + "/2");
+            Ghost ghost = new Ghost(game, 0, 0, ghostSprite, color);
+            ghostList.add(ghost); 
+        }
+        return ghostList;
     }
 
     /*
