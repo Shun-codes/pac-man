@@ -37,7 +37,7 @@ public class PacmanSpeedBonus extends Bonus {
      */
     @Override
     public void handleBonus() {
-        
+        game.getPlayer().setState(new PacmanSpeedState());
     }
 }
 

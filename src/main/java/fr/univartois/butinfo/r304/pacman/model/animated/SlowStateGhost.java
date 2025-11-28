@@ -100,7 +100,7 @@ public class SlowStateGhost implements IStateGhost{
      */
     @Override
     public void handleCollisionWithAnimated(Ghost ghost, IAnimated animated) {
-        //
+        animated.onCollisionWith(ghost);
     }
 
 }
