@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.univartois.butinfo.r304.pacman.model.animated.BonusComposite;
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
 import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
+import fr.univartois.butinfo.r304.pacman.model.animated.InvulnerableBonus;
 import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
+import fr.univartois.butinfo.r304.pacman.model.animated.PacmanSpeedBonus;
+import fr.univartois.butinfo.r304.pacman.model.animated.ScoreBonus;
+import fr.univartois.butinfo.r304.pacman.model.animated.SlowGhostBonus;
 import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorEmpty;
 import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorFixed;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
@@ -111,18 +116,52 @@ public class ConcreteFactoryPacmanGame implements IAbstractFactoryPacmanGame {
      */
     @Override
     public IAnimated createGum(PacmanGame game, int cellColumn, int cellRow) {
-        int r = RANDOM.nextInt(100);
-        if (r <= 1) {
-           MegaGum megagum = new MegaGum(
-                   game, 
-                   cellColumn * spriteStore.getSpriteSize(),
-                   cellRow * spriteStore.getSpriteSize(),
-                   spriteStore.getSprite("megagum")
-           );
-           return megagum;
+        int r = RANDOM.nextInt(1000);
+        if (r <= 2) {
+            ScoreBonus scorebonus = new ScoreBonus(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("bonus/cherries"));
+            return scorebonus;
+        } else if (r <= 4) {
+            SlowGhostBonus slowghostbonus = new SlowGhostBonus(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("bonus/melon"));
+            return slowghostbonus;
+        } else if (r <= 6) {
+            PacmanSpeedBonus pacmanspeedbonus = new PacmanSpeedBonus(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("bonus/galaxian"));
+            return pacmanspeedbonus;
+        } else if (r <= 8) {
+            InvulnerableBonus invulnerablebonus = new InvulnerableBonus(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("bonus/orange"));
+            return invulnerablebonus;
+        } else if (r <= 10) {
+            BonusComposite bonuscomposite = new BonusComposite(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("bonus/key"));
+            return bonuscomposite;
+        } else if (r <= 25) {
+            MegaGum megagum = new MegaGum(
+                    game, 
+                    cellColumn * spriteStore.getSpriteSize(),
+                    cellRow * spriteStore.getSpriteSize(),
+                    spriteStore.getSprite("megagum"));
+            return megagum;
         } else {
             PacGum gum = new PacGum(
-                    game,
+                    game, 
                     cellColumn * spriteStore.getSpriteSize(),
                     cellRow * spriteStore.getSpriteSize(),
                     spriteStore.getSprite("pacgum") // sprite de la pac-gomme

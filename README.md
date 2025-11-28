@@ -196,6 +196,7 @@ ICardGenerator --> Cell : << crée >>
 class PacmanGame {
     + {static} RANDOM : Random
     + {static} DEFAULT_SPEED : int
+    - speed : int
     - width : int
     - height : int
     - spriteStore : ISpriteStore
@@ -215,6 +216,7 @@ class PacmanGame {
     + getHeight() : int
     + prepare() : void
     + start() : void
+    + setSpeed() : void
     - createMap() : GameMap
     - createAnimated() : void
     - initStatistics() : void
@@ -264,6 +266,7 @@ interface IAnimated {
     + {abstract} onCollisionWith(other : Ghost) : void
     + {abstract} onCollisionWith(other : PacGum) : void
     + {abstract} onCollisionWith(other : MegaGum) : void
+    + {abstract} onCollisionWith(other : Bonus) : void
     + {abstract} onDespawn() : void
     + {abstract} onDestruction() : void
     + {abstract} self() : IAnimated
@@ -353,19 +356,23 @@ AbstractAnimated o-- "1" Sprite
 class PacMan extends AbstractAnimated {
     - hp : IntegerProperty
     - score : IntegerProperty
-    - vulnerabilities : IStatePacman
+    - state : IStatePacman
     - spriteStore : SpriteStore
+    - scoreMult : double
 
     + PacMan(game : PacmanGame, xPosition : double, yPosition : double, sprite : Sprite)
     + getHpProperty() : IntegerProperty
     + getScoreProperty() : IntegerProperty
     + getHp() : IntegerProperty
     + setHp(hp : int) : void
+    + setScoreMult(scoreMult : double) : void
+    + setState(state : IStatePacman): void
     + onCollisionWith(other : IAnimated) : void
     + onCollisionWith(other : PacMan) : void
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
     + onCollisionWith(other : MegaGum) : void
+    + onCollisionWith(other : Bonus) : void
     + onStep(delta : long) : boolean
 }
 
@@ -373,15 +380,19 @@ interface IStatePacman {
 	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
 	+ changeStatePacman(time : long) : IStatePacman
 	+ getSprite(spriteStore : SpriteStore) : Sprite
+	+ handleState(game : PacmanGame) : void
 }
 
 class PacmanInvulnerable implements IStatePacman{
 	- compteur : long
 	- sprite : Sprite
+	- duree : long
 	
 	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
 	+ changeStatePacman(time : long) : IStatePacman
 	+ getSprite(spriteStore : SpriteStore) : Sprite
+	+ handleState(game : PacmanGame) : void
+	+ setDuree(duree : long) : void
 }
 
 class PacmanVulnerable implements IStatePacman{
@@ -390,6 +401,46 @@ class PacmanVulnerable implements IStatePacman{
 	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
 	+ changeStatePacman(time : long) : IStatePacman
 	+ getSprite(spriteStore : SpriteStore) : Sprite
+	+ handleState(game : PacmanGame) : void
+}
+
+class ScoreBonusState extends PacmanVulnerable {
+	- delta : long
+	
+	+ changeStatePacman(time : long) : IStatePacman
+	+ handleState(game : PacmanGame) : void
+}
+
+class PacmanVulnerable implements IStatePacman{
+	- sprite : Sprite
+	
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+	+ handleState(game : PacmanGame) : void
+}
+
+class ScoreBonusState extends PacmanVulnerable {
+	- delta : long
+	
+	+ changeStatePacman(time : long) : IStatePacman
+	+ handleState(game : PacmanGame) : void
+}
+
+class PacmanSpeedState extends PacmanVulnerable {
+	- delta : long
+	
+	+ changeStatePacman(time : long) : IStatePacman
+	+ handleState(game : PacmanGame) : void
+}
+
+class PacmanVulnerable implements IStatePacman{
+	- sprite : Sprite
+	
+	+ onCollisionWithGhost(pacman : PacMan) : IStatePacman
+	+ changeStatePacman(time : long) : IStatePacman
+	+ getSprite(spriteStore : SpriteStore) : Sprite
+	+ handleState(game : PacmanGame) : void
 }
 
 class PacGum extends AbstractAnimated {
@@ -399,6 +450,7 @@ class PacGum extends AbstractAnimated {
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
     + onCollisionWith(other : MegaGum) : void
+    + onCollisionWith(other : Bonus) : void
 }
 
 class MegaGum extends AbstractAnimated {
@@ -408,6 +460,7 @@ class MegaGum extends AbstractAnimated {
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
     + onCollisionWith(other : MegaGum) : void
+    + onCollisionWith(other : Bonus) : void
 }
 
 
@@ -437,11 +490,21 @@ class Ghost extends AbstractAnimated implements IAnimated {
     + onCollisionWith(other : Ghost) : void
     + onCollisionWith(other : PacGum) : void
     + onCollisionWith(other : MegaGum) : void
+    + onCollisionWith(other : Bonus) : void
     + onStep(delta : long) : boolean
 }
 
+interface IStateGhost{
+	+ moveState(ghost : Ghost, game : PacmanGame) : void
+	+ handleCollisionWithPacman(Ghost ghost,PacmanGame game) : IStateGhost
+	+ getSpriteGhost(Ghost ghost) : void
+	+ nextState() : IStateGhost
+	+ handleCollisionWithAnimated(Ghost ghost, IAnimated animated) : void
+}    
+
 interface IStrategyGhost {
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+    + setSpeed(speed : double) : void
 }
 
 interface IStateGhostMove {
@@ -450,31 +513,35 @@ interface IStateGhostMove {
 }
 
 class ChaseStrategyGhost implements IStrategyGhost {
-    - {static} SPEED : double
+    - speed : double
+    + setSpeed(speed : double) : void
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
     - changeDirection(ghost : Ghost, game : PacmanGame) : void
 }
 
 class DumbStrategyGhost implements IStrategyGhost {
-    - {static} SPEED : double
+    - speed : double
     - temps : double
+    + setSpeed(speed : double) : void
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
     - changeDirection(ghost : Ghost) : void
 }
 
 class SurroundStrategyGhost implements IStrategyGhost {
-    - {static} SPEED : double
     - speedOfGhost : double
     - stateGhost : IStateGhost
     + SurroundStrategyGhost(speedOfGhost : int)
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+    + setSpeed(speed : double) : void
 }
 
 class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
     - listeStrategys : IStrategyGhost[]
     - temps : double
     - current : int
+    - speed : double
     + moveStrategy(ghost : Ghost, delta : long, game : PacmanGame) : void
+    + setSpeed(speed : double) : void
 }
 
 class DistantStateGhost implements IStateGhost {
@@ -489,14 +556,6 @@ class ClassicStateGhost implements IStateGhost {
     + getInstance() : ClassicStateGhost
     + moveState(ghost : Ghost, delta : long, speedOfGhostState : double, game : PacmanGame) : void
     + nextState() : IStateGhost
-}
-
-interface IStateGhost {
-    + moveState(ghost : Ghost, game : PacmanGame) : void
-    + handleCollisionWithPacman(ghost : Ghost, game : PacmanGame) : IStateGhost
-    + getSpriteGhost(ghost : Ghost) : void
-    + nextState() : IStateGhost
-    + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
 }
 
 class FleeingStateGhost implements IStateGhost {
@@ -539,6 +598,58 @@ class VulnerableStateGhost implements IStateGhost {
     + getSpriteGhost(ghost : Ghost) : void
     + nextState() : IStateGhost
     + handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+class SlowStateGhost implements IStateGhost{
+	- time : double = 5000                            
+	- spritesGhost : Sprite
+	- SPEED : double = 50                            
+
+	+ moveState(Ghost ghost, PacmanGame game) : void
+	+ handleCollisionWithPacman(Ghost ghost, PacmanGame game) : IStateGhost
+	+ getSpriteGhost(Ghost ghost) : void
+	+ nextState() : IStateGhost
+	+ handleCollisionWithAnimated(ghost : Ghost, animated : IAnimated) : void
+}
+
+abstract class Bonus extends AbstractAnimated {
+	# Bonus()game : PacmanGame, xPosition : double, yPosition : double, Sprite sprites)
+	+ onCollisionWith(other : IAnimated) : void
+	+ onCollisionWith(other : PacMan) : void
+	+ onCollisionWith(other : Ghost) : void
+	+ onCollisionWith(other : PacGum) : void
+	+ onCollisionWith(other : MegaGum) : void
+	+ onCollisionWith(other : Bonus) : void
+}
+
+class ScoreBonus extends Bonus {
+	+ ScoreBonus(game : PacmanGame, xPosition double, yPosition double, sprites Sprite)
+	+ handleBonus() : void
+}
+
+class SlowGhostBonus extends Bonus{
+	+ SlowGhostBonus(PacmanGame game, double xPosition, double yPosition, Sprite sprites)
+	+ handleCollisionWithAnimated(Ghost ghost, IAnimated animated) : void
+}
+
+class BonusComposite implements IAnimated {
+	- bonuses : Bonus[]
+	- bonusSlowGhost : Bonus
+	- rand : Random
+	
+	# BonusComposite(PacmanGame game, double xPosition, double yPosition, Sprite sprites)
+	+ onCollisionWith(IAnimated other) : void
+	+ onCollisionWith(PacMan other) : void
+}
+
+class PacmanSpeedBonus extends Bonus {
+	+ PacmanSpeedBonus(game : PacmanGame, xPosition double, yPosition double, sprites Sprite)
+	+ handleBonus() : void
+}
+
+class InvulnerableBonus extends Bonus {
+	+ PacmanSpeedBonus(game : PacmanGame, xPosition double, yPosition double, sprites Sprite)
+	+ InvulnerableBonus() : void
 }
 
 Ghost o-- "1" GhostColor

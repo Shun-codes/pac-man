@@ -7,6 +7,7 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
@@ -28,6 +29,11 @@ public class PacmanInvulnerable implements IStatePacman{
     private long compteur = 0;
     
     /**
+     * L'atribut duree indique la durée 
+     */
+   private long duree = 3000;
+    
+    /**
      * L'attribut sprite qui gère l'apparence de pacman.
      */
     private Sprite sprite = null;
@@ -41,6 +47,15 @@ public class PacmanInvulnerable implements IStatePacman{
     public IStatePacman onCollisionWithGhost(PacMan pacman) {
         return this;        
     }
+    
+    /**
+     * Modifie l'attribut duree de cette instance de PacmanInvulnerable.
+     *
+     * @param duree La nouvelle valeur de l'attribut duree pour cette instance de PacmanInvulnerable.
+     */
+    public void setDuree(long duree) {
+        this.duree = duree;
+    }
 
     /*
      * (non-Javadoc)
@@ -50,7 +65,7 @@ public class PacmanInvulnerable implements IStatePacman{
     @Override
     public IStatePacman changeStatePacman(long time) {
        compteur += time;
-       if(compteur < 3000) { // 3 secondes d'invulnérabilité
+       if(compteur < duree) { // 3 secondes d'invulnérabilité
            return this;
        }
         return new PacmanVulnerable();
@@ -69,5 +84,15 @@ public class PacmanInvulnerable implements IStatePacman{
         return sprite;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStatePacman#handleState()
+     */
+    @Override
+    public void handleState(PacmanGame game) {
+        game.getPlayer().setScoreMult(1);
+        game.setSpeed(PacmanGame.DEFAULT_SPEED);
+    }
 }
 

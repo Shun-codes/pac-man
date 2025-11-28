@@ -22,15 +22,11 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
-import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
-import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
-import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryDesignPattern;
-import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryParticipant;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -50,10 +46,15 @@ public final class PacmanGame {
     public static final Random RANDOM = new Random();
 
     /**
-     * La vitesse de déplacement du joueur (en pixels/s).
+     * La vitesse de déplacement du joueur (en pixels/s). par défaut
      */
     public static final int DEFAULT_SPEED = 150;
 
+    /**
+     * La vitesse de déplacement du joueur (en pixels/s).
+     */
+    private int speed = DEFAULT_SPEED;
+    
     /**
      * La largeur de la carte du jeu (en pixels).
      */
@@ -113,6 +114,7 @@ public final class PacmanGame {
      * L'animation du jeu, qui s'assure que les différents objets évoluent.
      */
     private final AnimationTimer animation = new GameAnimation(movingObjects, animatedObjects);
+
     /**
      * Le contrôleur du jeu.
      */
@@ -189,7 +191,16 @@ public final class PacmanGame {
     public PacMan getPlayer() {
         return player;
     }
-    
+
+    /**
+     * Modifie l'attribut speed de cette instance de PacmanGame.
+     *
+     * @param speed La nouvelle valeur de l'attribut speed pour cette instance de PacmanGame.
+     */
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     /**
      * Prépare une partie de Pac-Man avant qu'elle ne démarre.
      */
@@ -235,10 +246,12 @@ public final class PacmanGame {
         nbGums = emptyCells.size(); // mettre à jour le nombre de pac-gommes
         for (int i = 0; i < emptyCells.size(); i++) {
             Cell cell = emptyCells.get(i);
+
             int cellColumn = cell.getColumn();
             int cellRow = cell.getRow();
             
             addAnimated(factory.createGum(this, cellColumn, cellRow));
+
         }
     }
 
@@ -270,7 +283,7 @@ public final class PacmanGame {
      */
     public void moveUp() {
         stopMoving();
-        player.setVerticalSpeed(-DEFAULT_SPEED);
+        player.setVerticalSpeed(-speed);
         player.setRotate(270);
     }
 
@@ -279,7 +292,7 @@ public final class PacmanGame {
      */
     public void moveRight() {
         stopMoving();
-        player.setHorizontalSpeed(DEFAULT_SPEED);
+        player.setHorizontalSpeed(speed);
         player.setRotate(0);
     }
 
@@ -288,7 +301,7 @@ public final class PacmanGame {
      */
     public void moveDown() {
         stopMoving();
-        player.setVerticalSpeed(DEFAULT_SPEED);
+        player.setVerticalSpeed(speed);
         player.setRotate(90);
     }
 
@@ -297,7 +310,7 @@ public final class PacmanGame {
      */
     public void moveLeft() {
         stopMoving();
-        player.setHorizontalSpeed(-DEFAULT_SPEED);
+        player.setHorizontalSpeed(-speed);
         player.setRotate(180);
     }
 
@@ -399,7 +412,7 @@ public final class PacmanGame {
             gameOver("YOU WIN!");
         }
     }
-    
+
     /**
      * Indique que le joueur a mangé une mega-gomme.
      *
