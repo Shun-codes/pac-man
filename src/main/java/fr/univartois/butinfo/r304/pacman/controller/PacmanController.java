@@ -122,17 +122,12 @@ public final class PacmanController implements IPacmanController {
 
                 String text = message.getText();
                 if (text.contains("CONTINUE")) {
-                    // Victoire → passer au niveau suivant
                     game.nextLevel();
                 } else {
-                    // Défaite → restart au niveau 1
-                    reset();
-                    game.prepare();
-                    game.start();
+                    game.restartCurrentLevel();
                 }
             }
         });
-
         // Lorsque l'utilisateur appuie sur une flèche, on déplace son personnage.
         stage.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             if (started) {
