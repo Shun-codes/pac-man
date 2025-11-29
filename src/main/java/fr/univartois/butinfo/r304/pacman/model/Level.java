@@ -29,13 +29,27 @@ public class Level {
     private final GameMap map;
     
     /**
+     * L'attribut megaGumProbability La probabilité d'apparition des méga-gommes
+     */
+    private final int megaGumProbability;
+    
+    /**
+     * L'attribut bonusProbability La probabilité d'apparition des bonus
+     */
+    private final int bonusProbability;
+    
+    /**
      * Crée une nouvelle instance de Level.
      * @param levelNumber le numéro du niveau
      * @param map La map du niveau
+     * @param megaGumProbability la probabilité d'apparition des méga-gommes
+     * @param bonusProbability la probabilité d'apparition des bonus
      */
-    public Level (int levelNumber, GameMap map) {
+    public Level(int levelNumber, GameMap map, int megaGumProbability, int bonusProbability) {
         this.levelNumber = levelNumber;
         this.map = map;
+        this.megaGumProbability = megaGumProbability;
+        this.bonusProbability = bonusProbability;
     }
     
     
@@ -51,6 +65,20 @@ public class Level {
      */
     public GameMap getMap() {
         return map;
+    }
+    
+    /**
+     * @return La probabilité d'apparition des méga-gommes
+     */
+    public int getMegaGumProbability() {
+        return megaGumProbability;
+    }
+
+    /**
+     * @return La probabilité d'apparition des bonus
+     */
+    public int getBonusProbability() {
+        return bonusProbability;
     }
 }
 
