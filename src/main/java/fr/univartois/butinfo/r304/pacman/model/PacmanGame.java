@@ -123,18 +123,6 @@ public final class PacmanGame {
      */
     private IPacmanController controller;
     
-    
-    /**
-     * L'attribut levelNumber le numéro du niveau
-     */
-    private int levelNumber;
-   
-    
-    /**
-     * L'attribut card qui génère la carte du jeu
-     */
-    private ICardGenerator card;
-    
     /**
      * L'attribut currentLevel qui contient le niveau actuel du jeu.
      */
@@ -211,6 +199,15 @@ public final class PacmanGame {
     public PacMan getPlayer() {
         return player;
     }
+    
+    /**
+     * Donne le niveau actuel du jeu.
+     *
+     * @return Le niveau actuel.
+     */
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
 
     /**
      * Modifie l'attribut speed de cette instance de PacmanGame.
@@ -239,8 +236,6 @@ public final class PacmanGame {
         animation.start();
     }
     
-    
-
     /**
      * @param levelNumber le numéro du niveau
      */
@@ -257,19 +252,34 @@ public final class PacmanGame {
      */
     private void levelCleared(String message) {
         animation.stop();
-        controller.gameOver(message); // affiche le message dans l'UI
+        int nextLevelNumber = currentLevel.getLevelNumber() + 1;
+        prepareLevel(nextLevelNumber);
+        createAnimated();
+        initStatistics();
+        controller.gameOver(message);
     }
-
-
+    
+    /**
+     * Redémarre le niveau actuel après une défaite.
+     */
+    public void restartCurrentLevel() {
+        animation.stop();
+        int currentLevelNumber;
+        if (currentLevel != null) {
+            currentLevelNumber = currentLevel.getLevelNumber();
+        } else {
+            currentLevelNumber = 1;
+        }
+        prepareLevel(currentLevelNumber);
+        createAnimated();
+        initStatistics();
+        animation.start();
+    }
     
     /**
      * Passe au niveau suivant.
      */
     public void nextLevel() {
-        animation.stop();
-        int nextLevelNumber = currentLevel.getLevelNumber() + 1;
-        prepareLevel(nextLevelNumber);
-        createAnimated();
         animation.start();
     }
 
@@ -466,7 +476,6 @@ public final class PacmanGame {
 
         if (nbGums <= 0) {
             levelCleared("YOU WIN!");
-            nextLevel();
         }
     }
     
@@ -481,10 +490,8 @@ public final class PacmanGame {
 
         if (nbGums <= 0) {
             levelCleared("YOU WIN!");
-            nextLevel();
         }
     }
-
 
     /**
      * Termine la partie lorsque le joueur est tué.
@@ -502,6 +509,4 @@ public final class PacmanGame {
         animation.stop();
         controller.gameOver(message);
     }
-    
-
 }
