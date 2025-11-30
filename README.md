@@ -775,9 +775,12 @@ PacmanController o-- "1" PacmanGame
 | ---------------------------------------------------- | ---------------------- | ---------- | --------------------------------------------- |
 | Définition d'un seul `SpriteStore`                 | Singleton              | oui        |  Timothée                                     |
 | Définition d'une seule instance quand c'est possible | Singleton              | oui        |  Timothée                                     |
-| Ajout des bonus (préciser lesquels)                  |                        |            |                                               |
-| Ajout des bonus multiples                            |                        |            |                                               |
-| Gestion des différents niveaux                       |                        |            |                                               |
+| Ajout des bonus (score)                              |                        | oui        |  Simon                                        |
+| Ajout des bonus (vitesse)                            |                        | oui        |  Simon                                        |
+| Ajout des bonus (invulnérable)                       |                        | oui        |  Simon                                        |
+| Ajout des bonus (fantomes lents)                     |                        | oui        |  Simon                                        |
+| Ajout des bonus multiples                            |                        | oui        |  Shun                                         |
+| Gestion des différents niveaux                       |                        | oui        |  Romain                                       |
 
 
 ### Jalon n°5 - TP n°7
