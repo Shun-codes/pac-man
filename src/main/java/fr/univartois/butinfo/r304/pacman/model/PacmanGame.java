@@ -428,6 +428,20 @@ public final class PacmanGame {
             gameOver("YOU WIN!");
         }
     }
+    
+    /**
+     * Indique que le joueur a mangé une mega-gomme.
+     *
+     * @param bonus Le bonus qui a été mangée.
+     */
+    public void bonusEaten(IAnimated bonus) {
+        nbGums--;
+        removeAnimated(bonus);
+
+        if (nbGums <= 0) {
+            gameOver("YOU WIN!");
+        }
+    }
 
     /**
      * Termine la partie lorsque le joueur est tué.
