@@ -22,17 +22,14 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
-import fr.univartois.butinfo.r304.pacman.model.animated.GhostColor;
-import fr.univartois.butinfo.r304.pacman.model.animated.MegaGum;
-import fr.univartois.butinfo.r304.pacman.model.animated.PacGum;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
 import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
-import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
-import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
+import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryDesignPattern;
+import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryParticipant;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -42,7 +39,8 @@ import javafx.animation.AnimationTimer;
  *
  * @version 0.1.0
  */
-@StrategyDesignPattern(strategy = ICardGenerator.class, participant = StrategyParticipant.CONTEXT)
+
+@AbstractFactoryDesignPattern(factory = IAbstractFactoryPacmanGame.class, participant = AbstractFactoryParticipant.CONTEXT)
 public final class PacmanGame {
 
     /**
@@ -51,10 +49,15 @@ public final class PacmanGame {
     public static final Random RANDOM = new Random();
 
     /**
-     * La vitesse de déplacement du joueur (en pixels/s).
+     * La vitesse de déplacement du joueur (en pixels/s). par défaut
      */
     public static final int DEFAULT_SPEED = 150;
 
+    /**
+     * La vitesse de déplacement du joueur (en pixels/s).
+     */
+    private int speed = DEFAULT_SPEED;
+    
     /**
      * La largeur de la carte du jeu (en pixels).
      */
@@ -79,6 +82,11 @@ public final class PacmanGame {
      * Le personnage du joueur.
      */
     private PacMan player;
+    
+    /**
+     * L'attribut factory qui créé une instance de ConcreteFactoryPacmanGame
+     */
+    private IAbstractFactoryPacmanGame factory = new ConcreteFactoryPacmanGame();
 
     /**
      * Le nombre de fantômes initialement dans le jeu.
@@ -90,6 +98,9 @@ public final class PacmanGame {
      */
     private int nbGums;
     
+    /**
+     * L'attribut ghostList qui contient la liste des fantômes du jeu.
+     */
     private List<Ghost> ghostList = new ArrayList<>();
 
     /**
@@ -111,11 +122,11 @@ public final class PacmanGame {
      * Le contrôleur du jeu.
      */
     private IPacmanController controller;
-
+    
     /**
-     * Le générateur de cartes
+     * L'attribut currentLevel qui contient le niveau actuel du jeu.
      */
-    private ICardGenerator generator;
+    private Level currentLevel;
 
     /**
      * Crée une nouvelle instance de PacmanGame.
@@ -188,50 +199,109 @@ public final class PacmanGame {
     public PacMan getPlayer() {
         return player;
     }
+    
+    /**
+     * Donne le niveau actuel du jeu.
+     *
+     * @return Le niveau actuel.
+     */
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
 
     /**
-     * Modifie l'attribut generator de cette instance de PacmanGame.
+     * Modifie l'attribut speed de cette instance de PacmanGame.
      *
-     * @param generator La nouvelle valeur de l'attribut generator pour cette instance de
-     *        PacmanGame.
+     * @param speed La nouvelle valeur de l'attribut speed pour cette instance de PacmanGame.
      */
-    public void setGenerator(ICardGenerator generator) {
-        this.generator = generator;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     /**
      * Prépare une partie de Pac-Man avant qu'elle ne démarre.
      */
     public void prepare() {
-        gameMap = createMap();
+        gameMap = factory.createMap(width, height); // Changer donner la taille de la map height width
         controller.prepare(gameMap);
+    }
+    
+    /**
+     * Donne l'attribut nbGums de cette instance de PacmanGame.
+     *
+     * @return L'attribut nbGums de cette instance de PacmanGame.
+     */
+    public int getNbGums() {
+        return nbGums;
     }
 
     /**
-     * Crée la carte du jeu, en respectant les dimensions de la fenêtre.
+     * Modifie l'attribut nbGums de cette instance de PacmanGame.
      *
-     * @return La carte du jeu ayant été créée.
+     * @param nbGums La nouvelle valeur de l'attribut nbGums pour cette instance de PacmanGame.
      */
-    private GameMap createMap() {
-        int cellSize = spriteStore.getSpriteSize();
-
-        // Convertir les dimensions de la carte en nombre de cellules
-        int numRows = height / cellSize;
-        int numCols = width / cellSize;
-
-        return generator.generate(numRows, numCols);
+    public void setNbGums(int nbGums) {
+        this.nbGums = nbGums;
     }
 
     /**
      * Démarre la partie de Pac-Man.
      */
     public void start() {
-        prepare();
+        prepareLevel(1);
         createAnimated();
         initStatistics();
         animation.start();
     }
+    
+    /**
+     * @param levelNumber le numéro du niveau
+     */
+    public void prepareLevel(int levelNumber) {
+        currentLevel = LevelFactory.createLevel(levelNumber, width, height);
+        gameMap = currentLevel.getMap();
+        controller.prepare(gameMap);
+    }
+    
+    /**
+     * Indique que le joueur a terminé un niveau avec succès.
+     *
+     * @param message Le message indiquant la victoire.
+     */
+    private void levelCleared(String message) {
+        animation.stop();
+        int nextLevelNumber = currentLevel.getLevelNumber() + 1;
+        prepareLevel(nextLevelNumber);
+        createAnimated();
+        initStatistics();
+        controller.gameOver(message);
+    }
+    
+    /**
+     * Redémarre le niveau actuel après une défaite.
+     */
+    public void restartCurrentLevel() {
+        animation.stop();
+        int currentLevelNumber;
+        if (currentLevel != null) {
+            currentLevelNumber = currentLevel.getLevelNumber();
+        } else {
+            currentLevelNumber = 1;
+        }
+        prepareLevel(currentLevelNumber);
+        createAnimated();
+        initStatistics();
+        animation.start();
+    }
+    
+    /**
+     * Passe au niveau suivant.
+     */
+    public void nextLevel() {
+        animation.start();
+    }
 
+    
     /**
      * Crée les différents objets animés présents au début de la partie.
      */
@@ -240,49 +310,31 @@ public final class PacmanGame {
         clearAnimated();
 
         // On crée le joueur sur la carte.
-        player = new PacMan(this, 0, 0, spriteStore.getSprite("pacman/closed", "pacman/half-open",
-                "pacman/open", "pacman/half-open"));
+        
+        player = factory.createPacman(this);
+        
         animatedObjects.add(player);
         spawnAnimated(player);
-
-        // On crée ensuite les fantômes sur la carte.
-        GhostColor[] colors = GhostColor.values();
+        
+        ghostList = factory.createGhost(this);
         for (int i = 0; i < nbGhosts; i++) {
-            GhostColor color = colors[i % colors.length];
-
-            Sprite ghostSprite = spriteStore.getSprite(
-                    "ghosts/" + color.name().toLowerCase() + "/1",
-                    "ghosts/" + color.name().toLowerCase() + "/2");
-            Ghost ghost = new Ghost(this, 0, 0, ghostSprite, color);
-            ghostList.add(ghost); 
-
+            Ghost ghost = ghostList.get(i);
             ghost.setHorizontalSpeed(DEFAULT_SPEED * 0.8);
             animatedObjects.add(ghost);
             spawnAnimated(ghost);
         }
+        
 
-        List<Cell> emptyCells = gameMap.getEmptyCells();
+        // List<Cell> emptyCells = gameMap.getEmptyCells();
+        List<Cell> emptyCells = currentLevel.getMap().getEmptyCells();
         nbGums = emptyCells.size(); // mettre à jour le nombre de pac-gommes
         for (int i = 0; i < emptyCells.size(); i++) {
             Cell cell = emptyCells.get(i);
-            int r = RANDOM.nextInt(100);
-            if (r <= 1) {
-               MegaGum megagum = new MegaGum(
-                       this, 
-                       cell.getColumn() * spriteStore.getSpriteSize(),
-                       cell.getRow() * spriteStore.getSpriteSize(),
-                       spriteStore.getSprite("megagum")
-               );
-               addAnimated(megagum);
-            } else {
-                PacGum gum = new PacGum(
-                        this,
-                        cell.getColumn() * spriteStore.getSpriteSize(),
-                        cell.getRow() * spriteStore.getSpriteSize(),
-                        spriteStore.getSprite("pacgum") // sprite de la pac-gomme
-                );
-                addAnimated(gum);
-            }
+
+            int cellColumn = cell.getColumn();
+            int cellRow = cell.getRow();
+            
+            addAnimated(factory.createGum(this, cellColumn, cellRow));
 
         }
     }
@@ -315,7 +367,7 @@ public final class PacmanGame {
      */
     public void moveUp() {
         stopMoving();
-        player.setVerticalSpeed(-DEFAULT_SPEED);
+        player.setVerticalSpeed(-speed);
         player.setRotate(270);
     }
 
@@ -324,7 +376,7 @@ public final class PacmanGame {
      */
     public void moveRight() {
         stopMoving();
-        player.setHorizontalSpeed(DEFAULT_SPEED);
+        player.setHorizontalSpeed(speed);
         player.setRotate(0);
     }
 
@@ -333,7 +385,7 @@ public final class PacmanGame {
      */
     public void moveDown() {
         stopMoving();
-        player.setVerticalSpeed(DEFAULT_SPEED);
+        player.setVerticalSpeed(speed);
         player.setRotate(90);
     }
 
@@ -342,7 +394,7 @@ public final class PacmanGame {
      */
     public void moveLeft() {
         stopMoving();
-        player.setHorizontalSpeed(-DEFAULT_SPEED);
+        player.setHorizontalSpeed(-speed);
         player.setRotate(180);
     }
 
@@ -430,32 +482,32 @@ public final class PacmanGame {
         animatedObjects.clear();
         movingObjects.clear();
     }
-
+    
     /**
-     * Indique que le joueur a mangé une pac-gomme.
-     *
-     * @param gum La pac-gomme qui a été mangée.
-     */
+   * Indique que le joueur a mangé une pac-gomme.
+   *
+   * @param gum La pac-gomme qui a été mangée.
+   */
     public void pacGumEaten(IAnimated gum) {
         nbGums--;
         removeAnimated(gum);
 
         if (nbGums <= 0) {
-            gameOver("YOU WIN!");
+            levelCleared("YOU WIN!");
         }
     }
     
-    /**
-     * Indique que le joueur a mangé une mega-gomme.
-     *
-     * @param megagum La mega-gomme qui a été mangée.
-     */
+  /**
+  * Indique que le joueur a mangé une mega-gomme.
+  *
+  * @param megagum La mega-gomme qui a été mangée.
+  */
     public void megaGumEaten(IAnimated megagum) {
         nbGums--;
         removeAnimated(megagum);
 
         if (nbGums <= 0) {
-            gameOver("YOU WIN!");
+            levelCleared("YOU WIN!");
         }
     }
 
@@ -475,5 +527,4 @@ public final class PacmanGame {
         animation.stop();
         controller.gameOver(message);
     }
-
 }

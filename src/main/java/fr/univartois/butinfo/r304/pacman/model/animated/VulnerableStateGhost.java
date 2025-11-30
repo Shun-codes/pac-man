@@ -27,7 +27,7 @@ public class VulnerableStateGhost implements IStateGhost {
     /**
      * L'attribut temps représente le temps restant avant de devenir presque vulnerable
      */
-    private double time = 15000;
+    private double time = 10000;
     
     /**
      * Les sprites du fantômes dans cet état
@@ -68,7 +68,7 @@ public class VulnerableStateGhost implements IStateGhost {
     @Override
     public void getSpriteGhost(Ghost ghost) {
         if (spritesGhost == null) {
-            spritesGhost = new SpriteStore().getSprite("ghosts/hurt/1", "ghosts/hurt/2");
+            spritesGhost = SpriteStore.getInstance().getSprite("ghosts/hurt/1", "ghosts/hurt/2");
         }
         ghost.setSprite(spritesGhost);
     }
