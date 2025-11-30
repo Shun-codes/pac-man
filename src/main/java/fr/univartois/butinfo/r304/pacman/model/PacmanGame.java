@@ -25,6 +25,7 @@ import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
 import fr.univartois.butinfo.r304.pacman.model.animated.PacMan;
 import fr.univartois.butinfo.r304.pacman.model.map.Cell;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
+import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
 import fr.univartois.butinfo.r304.pacman.view.ISpriteStore;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.dpprocessor.designpatterns.abstractfactory.AbstractFactoryDesignPattern;
@@ -121,6 +122,11 @@ public final class PacmanGame {
      * Le contrôleur du jeu.
      */
     private IPacmanController controller;
+    
+    /**
+     * L'attribut currentLevel qui contient le niveau actuel du jeu.
+     */
+    private Level currentLevel;
 
     /**
      * Crée une nouvelle instance de PacmanGame.
@@ -193,6 +199,15 @@ public final class PacmanGame {
     public PacMan getPlayer() {
         return player;
     }
+    
+    /**
+     * Donne le niveau actuel du jeu.
+     *
+     * @return Le niveau actuel.
+     */
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
 
     /**
      * Modifie l'attribut speed de cette instance de PacmanGame.
@@ -215,12 +230,60 @@ public final class PacmanGame {
      * Démarre la partie de Pac-Man.
      */
     public void start() {
-        prepare();
+        prepareLevel(1);
         createAnimated();
         initStatistics();
         animation.start();
     }
+    
+    /**
+     * @param levelNumber le numéro du niveau
+     */
+    public void prepareLevel(int levelNumber) {
+        currentLevel = LevelFactory.createLevel(levelNumber, width, height);
+        gameMap = currentLevel.getMap();
+        controller.prepare(gameMap);
+    }
+    
+    /**
+     * Indique que le joueur a terminé un niveau avec succès.
+     *
+     * @param message Le message indiquant la victoire.
+     */
+    private void levelCleared(String message) {
+        animation.stop();
+        int nextLevelNumber = currentLevel.getLevelNumber() + 1;
+        prepareLevel(nextLevelNumber);
+        createAnimated();
+        initStatistics();
+        controller.gameOver(message);
+    }
+    
+    /**
+     * Redémarre le niveau actuel après une défaite.
+     */
+    public void restartCurrentLevel() {
+        animation.stop();
+        int currentLevelNumber;
+        if (currentLevel != null) {
+            currentLevelNumber = currentLevel.getLevelNumber();
+        } else {
+            currentLevelNumber = 1;
+        }
+        prepareLevel(currentLevelNumber);
+        createAnimated();
+        initStatistics();
+        animation.start();
+    }
+    
+    /**
+     * Passe au niveau suivant.
+     */
+    public void nextLevel() {
+        animation.start();
+    }
 
+    
     /**
      * Crée les différents objets animés présents au début de la partie.
      */
@@ -244,7 +307,8 @@ public final class PacmanGame {
         }
         
 
-        List<Cell> emptyCells = gameMap.getEmptyCells();
+        // List<Cell> emptyCells = gameMap.getEmptyCells();
+        List<Cell> emptyCells = currentLevel.getMap().getEmptyCells();
         nbGums = emptyCells.size(); // mettre à jour le nombre de pac-gommes
         for (int i = 0; i < emptyCells.size(); i++) {
             Cell cell = emptyCells.get(i);
@@ -400,32 +464,32 @@ public final class PacmanGame {
         animatedObjects.clear();
         movingObjects.clear();
     }
-
+    
     /**
-     * Indique que le joueur a mangé une pac-gomme.
-     *
-     * @param gum La pac-gomme qui a été mangée.
-     */
+   * Indique que le joueur a mangé une pac-gomme.
+   *
+   * @param gum La pac-gomme qui a été mangée.
+   */
     public void pacGumEaten(IAnimated gum) {
         nbGums--;
         removeAnimated(gum);
 
         if (nbGums <= 0) {
-            gameOver("YOU WIN!");
+            levelCleared("YOU WIN!");
         }
     }
-
-    /**
-     * Indique que le joueur a mangé une mega-gomme.
-     *
-     * @param megagum La mega-gomme qui a été mangée.
-     */
+    
+  /**
+  * Indique que le joueur a mangé une mega-gomme.
+  *
+  * @param megagum La mega-gomme qui a été mangée.
+  */
     public void megaGumEaten(IAnimated megagum) {
         nbGums--;
         removeAnimated(megagum);
 
         if (nbGums <= 0) {
-            gameOver("YOU WIN!");
+            levelCleared("YOU WIN!");
         }
     }
     
@@ -459,5 +523,4 @@ public final class PacmanGame {
         animation.stop();
         controller.gameOver(message);
     }
-
 }
