@@ -220,6 +220,9 @@ class PacmanGame {
     + prepare() : void
     + start() : void
     + setSpeed() : void
+    + getNbGums() : int
+    + setNbGums(nbGums : int)
+    - createMap() : GameMap
     - createAnimated() : void
     - initStatistics() : void
     - spawnAnimated(animated : IAnimated): void
