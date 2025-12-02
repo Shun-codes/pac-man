@@ -8,23 +8,26 @@
 package fr.univartois.butinfo.r304.pacman.model.map;
 
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
+import fr.univartois.dpprocessor.designpatterns.singleton.Instance;
+import fr.univartois.dpprocessor.designpatterns.singleton.SingletonDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 /**
- * Le type CardGenerator
+ * La class CardGenerator permet de générer une carte de jeu simple.
  *
  * @author romain.thibaut
  *
  * @version 0.1.0
  */
+@SingletonDesignPattern
 @StrategyDesignPattern(strategy = ICardGenerator.class, participant = StrategyParticipant.IMPLEMENTATION)
-public class CardGenerator implements ICardGenerator {
+public final class CardGenerator implements ICardGenerator {
 
     /**
-     * L'attribut INSTANCE...
+     * L'attribut INSTANCE contient l'unique instance de cette classe.
      */
-    
+    @Instance
     private static final CardGenerator INSTANCE = new CardGenerator();
     
     /**
@@ -39,6 +42,7 @@ public class CardGenerator implements ICardGenerator {
      *
      * @return L'attribut instance de cette instance.
      */
+    @Instance
     public static CardGenerator getInstance() {
         return INSTANCE;
     }
