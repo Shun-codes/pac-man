@@ -62,7 +62,7 @@ public class ConcreteFactoryPacmanGame implements IAbstractFactoryPacmanGame {
     /**
      * Le génarateur de nombres aléatoires utilisé dans le jeu.
      */
-    private Random RANDOM = new Random();
+    private Random random = new Random();
      
     /*
      * (non-Javadoc)
@@ -123,54 +123,54 @@ public class ConcreteFactoryPacmanGame implements IAbstractFactoryPacmanGame {
         int megaGumProb = currentLevel.getMegaGumProbability();
         int bonusProb = currentLevel.getBonusProbability();
 
-        int r = RANDOM.nextInt(1000);
+        int r = random.nextInt(1000);
 
         if (r < bonusProb) {
-            int type = RANDOM.nextInt(5);
+            int type = random.nextInt(5);
             game.setNbGums(game.getNbGums()-1); // Les bonus ne doivent pas obligatoirement être langé pour gagner
             switch (type) {
                 case 0:
                     return new ScoreBonus(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("bonus/cherries"));
                 case 1:
                     return new SlowGhostBonus(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("bonus/melon"));
                 case 2:
                     return new PacmanSpeedBonus(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("bonus/galaxian"));
                 case 3:
                     return new InvulnerableBonus(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("bonus/orange"));
                 case 4:
                     return new BonusComposite(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("bonus/key"));
                 default:
                     return new PacGum(game,
-                            cellColumn * spriteStore.getSpriteSize(),
-                            cellRow * spriteStore.getSpriteSize(),
+                            (double)cellColumn * spriteStore.getSpriteSize(),
+                            (double)cellRow * spriteStore.getSpriteSize(),
                             spriteStore.getSprite("pacgum"));
             }
         }
         else if (r < bonusProb + megaGumProb) {
             return new MegaGum(game,
-                    cellColumn * spriteStore.getSpriteSize(),
-                    cellRow * spriteStore.getSpriteSize(),
+                    (double)cellColumn * spriteStore.getSpriteSize(),
+                    (double)cellRow * spriteStore.getSpriteSize(),
                     spriteStore.getSprite("megagum"));
         }
 
         return new PacGum(game,
-                cellColumn * spriteStore.getSpriteSize(),
-                cellRow * spriteStore.getSpriteSize(),
+                (double)cellColumn * spriteStore.getSpriteSize(),
+                (double)cellRow * spriteStore.getSpriteSize(),
                 spriteStore.getSprite("pacgum"));
     }
 
