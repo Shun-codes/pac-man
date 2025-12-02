@@ -7,13 +7,11 @@
 
 package fr.univartois.butinfo.r304.pacman.model.map;
 
-import java.util.Iterator;
-
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.decorator.DecoratorDesignPattern;
 
 /**
- * Le type CardGeneratorDecorated
+ * La class CardGeneratorDecorated décore un générateur de carte en ajoutant des murs
  *
  * @author simon.cohet
  *
@@ -78,13 +76,8 @@ public class CardGeneratorDecorated implements ICardGenerator {
         return new Cell(wall);
     }
 
-    /**
-     * Crée une nouvelle cellule contenant un mur.
-     *
-     * @return Une cellule mur.
-     */
-    private Cell createPathCell() {
-        return new Cell(spriteStore.getSprite("path"));
-    }
+//    private Cell createPathCell() {
+//        return new Cell(spriteStore.getSprite("path"));
+//    }
 }
 
