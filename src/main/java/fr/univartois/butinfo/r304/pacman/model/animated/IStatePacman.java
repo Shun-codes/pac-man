@@ -43,7 +43,7 @@ public interface IStatePacman {
     
     /**
      * Gêre les modifications de l'états de pac-man
-     * @param game : la partie à laquelle appliquer l'effet
+     * @param game la partie à laquelle appliquer l'effet
      */
     public void handleState(PacmanGame game);
 }

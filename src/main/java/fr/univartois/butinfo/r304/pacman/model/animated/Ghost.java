@@ -51,7 +51,6 @@ public class Ghost extends AbstractAnimated{
      * @param yPosition la position sur l'axe vertical du famtôme
      * @param sprites les sprites du fantôme
      * @param color couleur du famtôme (RED, PINK, BLUE, ORANGE)
-     * @param stateGhost état du famtôme en question
      */
     public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color) {
         super(game, xPosition, yPosition, sprites);

@@ -44,11 +44,6 @@ public class DistantStateGhost implements IStateGhostMove {
         temps -= delta;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost#nextState()
-     */
     @Override
     public IStateGhostMove nextState() {
         if (temps <= 0) {

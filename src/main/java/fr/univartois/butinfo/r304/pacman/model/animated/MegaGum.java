@@ -25,10 +25,10 @@ public class MegaGum extends AbstractAnimated {
     /**
      * Crée une nouvelle instance de MegaGum.
      * 
-     * @param game
-     * @param xPosition
-     * @param yPosition
-     * @param sprite
+     * @param game le jeu Pacman
+     * @param xPosition la position en x
+     * @param yPosition la position en y
+     * @param sprite le sprite du MegaGum
      */
     public MegaGum(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
         super(game, xPosition, yPosition, sprite);

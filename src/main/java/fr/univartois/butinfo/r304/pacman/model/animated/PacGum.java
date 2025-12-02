@@ -23,10 +23,10 @@ public class PacGum extends AbstractAnimated {
     /**
      * Crée une nouvelle instance de PacGum.
      * 
-     * @param game 
-     * @param xPosition
-     * @param yPosition
-     * @param sprite 
+     * @param game le jeu Pacman
+     * @param xPosition la position en x
+     * @param yPosition la position en y
+     * @param sprite le sprite du PacGum
      */
     public PacGum(PacmanGame game, double xPosition, double yPosition, Sprite sprite) {
         super(game, xPosition, yPosition, sprite);

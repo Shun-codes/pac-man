@@ -8,6 +8,8 @@
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.dpprocessor.designpatterns.singleton.Instance;
+import fr.univartois.dpprocessor.designpatterns.singleton.SingletonDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
@@ -18,12 +20,14 @@ import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
  *
  * @version 0.1.0
  */
+@SingletonDesignPattern
 @StateDesignPattern(state = IStateGhostMove.class, participant = StateParticipant.IMPLEMENTATION)
-public class ClassicStateGhost implements IStateGhostMove{
+public final class ClassicStateGhost implements IStateGhostMove{
 
     /**
      * L'attribut INSTANCE...
      */
+    @Instance
     private static final ClassicStateGhost INSTANCE = new ClassicStateGhost();
     
     /**
@@ -38,6 +42,7 @@ public class ClassicStateGhost implements IStateGhostMove{
      *
      * @return L'attribut instance de cette instance.
      */
+    @Instance
     public static ClassicStateGhost getInstance() {
         return INSTANCE;
     }

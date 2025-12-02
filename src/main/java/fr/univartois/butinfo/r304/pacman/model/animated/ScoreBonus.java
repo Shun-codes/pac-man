@@ -20,10 +20,10 @@ import fr.univartois.butinfo.r304.pacman.view.Sprite;
 public class ScoreBonus extends Bonus {
     /**
      * Crée une nouvelle instance de ScoreBonus.
-     * @param game : la partie en cours
-     * @param xPosition : la position x du bonus
-     * @param yPosition : la position y du bonus
-     * @param sprites : les sprites du bonus
+     * @param game la partie en cours
+     * @param xPosition la position x du bonus
+     * @param yPosition la position y du bonus
+     * @param sprites les sprites du bonus
      */
     public ScoreBonus(PacmanGame game, double xPosition, double yPosition, Sprite sprites) {
         super(game, xPosition, yPosition, sprites);
