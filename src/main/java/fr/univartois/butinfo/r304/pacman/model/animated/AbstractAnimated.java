@@ -477,9 +477,9 @@ public abstract class AbstractAnimated implements IAnimated {
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return super.hashCode();
-    }
+    } 
 
     /*
      * (non-Javadoc)
@@ -487,7 +487,7 @@ public abstract class AbstractAnimated implements IAnimated {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (obj == null) {
             // Les deux objets sont forcément différents.
             return false;
@@ -506,5 +506,29 @@ public abstract class AbstractAnimated implements IAnimated {
         // L'objet donné n'est pas d'une classe compatible.
         return false;
     }
+    
+    @Override
+    public void onCollisionWith(PacMan other) {
+        // Par défaut les collisions ne sont pas gérées
+    }
 
+    @Override
+    public void onCollisionWith(Ghost other) {
+        // Par défaut les collisions ne sont pas gérées
+    }
+    
+    @Override
+    public void onCollisionWith(PacGum other) {
+        // Par défaut les collisions ne sont pas gérées
+    }
+    
+    @Override
+    public void onCollisionWith(MegaGum other) {
+        // Par défaut les collisions ne sont pas gérées
+    }
+    
+    @Override
+    public void onCollisionWith(Bonus other) {
+        // Par défaut les collisions ne sont pas gérées
+    }
 }

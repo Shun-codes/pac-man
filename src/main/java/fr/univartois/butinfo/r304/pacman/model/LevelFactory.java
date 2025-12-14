@@ -7,21 +7,29 @@
 
 package fr.univartois.butinfo.r304.pacman.model;
 
-import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorDecorated;
-import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorEmpty;
-import fr.univartois.butinfo.r304.pacman.model.map.CardGeneratorFixed;
 import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
 import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
+import fr.univartois.butinfo.r304.pacman.model.map.generator.CardGeneratorDecorated;
+import fr.univartois.butinfo.r304.pacman.model.map.generator.CardGeneratorEmpty;
+import fr.univartois.butinfo.r304.pacman.model.map.generator.CardGeneratorFixed;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 
 /**
- * Le type LevelFactory
+ * Le type LevelFactory 
  *
- * @author UTILISATEUR
+ * @author romain.thibaut
  *
  * @version 0.1.0
  */
 public class LevelFactory {
+    
+    /**
+     * Crée une nouvelle instance de LevelFactory. En private pour éviter l'instanciation.
+     */
+    private LevelFactory() {
+        // Constructeur privé pour empêcher l'instanciation
+    }
+    
     /**
      * @param levelNumber le numéro du niveau
      * @param width la largeur

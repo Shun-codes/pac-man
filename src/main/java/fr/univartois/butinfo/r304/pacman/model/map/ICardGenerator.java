@@ -11,7 +11,7 @@ import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 /**
- * Le type ICardGenerator
+ * La class ICardGenerator est l'interface des générateurs de carte de jeu.
  *
  * @author timothee.gros
  *

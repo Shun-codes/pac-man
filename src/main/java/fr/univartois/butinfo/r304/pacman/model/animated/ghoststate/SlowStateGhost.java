@@ -5,10 +5,13 @@
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.ghoststate;
 
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStrategyGhost;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
@@ -49,7 +52,7 @@ public class SlowStateGhost implements IStateGhost{
     public void moveState(Ghost ghost, PacmanGame game) {
         IStrategyGhost strategy = ghost.getColor().getMoveStrategy();
         strategy.setSpeed(SPEED);
-        time -= 1;
+        time -= 1; 
     }
 
     /*

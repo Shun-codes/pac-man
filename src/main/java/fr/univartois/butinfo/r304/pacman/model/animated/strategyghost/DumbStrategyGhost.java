@@ -5,11 +5,13 @@
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.strategyghost;
 
 import java.util.Random;
 
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStrategyGhost;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
@@ -27,10 +29,16 @@ public class DumbStrategyGhost implements IStrategyGhost {
      * L'attribut SPEED pour gerer la vitesse des famtômes quand il change de direction
      */
     private double speed;
+    
+
+    /**
+     * L'attribut r pour générer des nombres aléatoires
+     */
+    private Random r = new Random();
 
     /**
      * Crée une nouvelle instance de ChaseStrategyGhost. 
-     * @param speed : La vitesse de déplacement, peut être négative pour fuir
+     * @param speed La vitesse de déplacement, peut être négative pour fuir
      */
     public DumbStrategyGhost(double speed) {
         this.speed = speed;
@@ -76,7 +84,6 @@ public class DumbStrategyGhost implements IStrategyGhost {
      * @param ghost le famtome en question 
      */
     private void changeDirection(Ghost ghost) {
-        Random r = new Random();
         int random = r.nextInt(4);
         switch (random) {
             case 0:

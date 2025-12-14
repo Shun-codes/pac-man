@@ -1,44 +1,37 @@
 /**
  * Ce fichier fait partie du projet projet-2025-2026.
  *
- * (c) 2025 simon.cohet
+ * (c) 2025 shun.lembrez
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.ghoststate;
 
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStrategyGhost;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
 /**
- * Le type FleeingStateGhost
+ * La classe InvulnerableStateGhost, l'etat ou le fantôme est invulnerable 
  *
- * @author simon.cohet
+ * @author shun.lembrez
  *
  * @version 0.1.0
  */
-
 @StateDesignPattern(state = IStateGhost.class, participant = StateParticipant.IMPLEMENTATION)
-public class FleeingStateGhost implements IStateGhost {
-    /**
-     * L'attribut temps représente le temps restant avant de redevenir vulnerable
-     */
-    private double time = 5000;
+public class InvulnerableStateGhost implements IStateGhost{
     
     /**
-     * Les sprites du fantômes dans cet état
+     * Attribut spritesGhost pour geres les sprites du fantôme
      */
     private Sprite spritesGhost = null;
-    
-    /**
-     * L'attribut SPEED vitesse pour les fantôme fuyant
-     */
-    private static final double SPEED = -80;
-    
+
     /*
      * (non-Javadoc)
      *
@@ -46,8 +39,10 @@ public class FleeingStateGhost implements IStateGhost {
      */
     @Override
     public void moveState(Ghost ghost, PacmanGame game) {
-        ghost.setStrategyGhost(new ChaseStrategyGhost(SPEED));
-        time -= 1;
+        // déplacement de bases
+        IStrategyGhost strategy = ghost.getColor().getMoveStrategy();
+        strategy.setSpeed(75);
+        ghost.setStrategyGhost(strategy);
     }
 
     /*
@@ -57,8 +52,8 @@ public class FleeingStateGhost implements IStateGhost {
      */
     @Override
     public IStateGhost handleCollisionWithPacman(Ghost ghost, PacmanGame game) {
-        // Rien, le fantôme fuis et est invulnérable
-        return this;
+      //Volontairement vide, le fantôme ne peut pas être mangé
+        return this;        
     }
 
     /*
@@ -68,10 +63,14 @@ public class FleeingStateGhost implements IStateGhost {
      */
     @Override
     public void getSpriteGhost(Ghost ghost) {
-        if (spritesGhost == null) {
-            spritesGhost = SpriteStore.getInstance().getSprite("ghosts/afraid/1", "ghosts/afraid/2");
+        //redonne les sprites de bases
+        if(spritesGhost == null) {
+            spritesGhost = SpriteStore.getInstance().getSprite(
+                    "ghosts/" + ghost.getColor().name().toLowerCase() + "/1",
+                    "ghosts/" + ghost.getColor().name().toLowerCase() + "/2");
         }
         ghost.setSprite(spritesGhost);
+        
     }
 
     /*
@@ -81,11 +80,7 @@ public class FleeingStateGhost implements IStateGhost {
      */
     @Override
     public IStateGhost nextState() {
-        if (time <= 0) {
-            return new InvulnerableStateGhost();
-        } else {
-            return this;
-        }
+        return this;
     }
 
     /*
@@ -95,7 +90,7 @@ public class FleeingStateGhost implements IStateGhost {
      */
     @Override
     public void handleCollisionWithAnimated(Ghost ghost, IAnimated animated) {
-        //
+        animated.onCollisionWith(ghost);
     }
 
 }

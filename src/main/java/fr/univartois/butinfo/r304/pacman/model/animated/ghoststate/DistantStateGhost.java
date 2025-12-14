@@ -5,42 +5,29 @@
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.ghoststate;
 
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStateGhostMove;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
 /**
- * Le type ClassicStateGhost
+ * La classe distantStateGhost , l'etat ou le fantôme est distant
  *
  * @author shun.lembrez
  *
  * @version 0.1.0
  */
 @StateDesignPattern(state = IStateGhostMove.class, participant = StateParticipant.IMPLEMENTATION)
-public class ClassicStateGhost implements IStateGhostMove{
+public class DistantStateGhost implements IStateGhostMove {
 
-    /**
-     * L'attribut INSTANCE...
-     */
-    private static final ClassicStateGhost INSTANCE = new ClassicStateGhost();
     
     /**
-     * Crée une nouvelle instance.
+     * L'attribut temps pour actualise tout les 7 secondes
      */
-    private ClassicStateGhost() {
-        super();
-    }
-    
-    /**
-     * Donne l'attribut instance de cette instance.
-     *
-     * @return L'attribut instance de cette instance.
-     */
-    public static ClassicStateGhost getInstance() {
-        return INSTANCE;
-    }
+    private double temps = 7000;
     
     /*
      * (non-Javadoc)
@@ -49,18 +36,24 @@ public class ClassicStateGhost implements IStateGhostMove{
      */
     @Override
     public void moveState(Ghost ghost, long delta, double speedOfGhostState, PacmanGame game) {
-        ghost.setStrategyGhost(new ChaseRandomCompositeStrategyGhost());
+        if(game.getCellAt(ghost.getX()+1, ghost.getY()).isEmpty()){
+            ghost.setVerticalSpeed(0);
+            ghost.setHorizontalSpeed(speedOfGhostState);
+        } else {
+            ghost.setVerticalSpeed(speedOfGhostState);
+            ghost.setHorizontalSpeed(0);
+        }
+        temps -= delta;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost#nextState()
-     */
     @Override
     public IStateGhostMove nextState() {
-        return this;
+        if (temps <= 0) {
+            return ClassicStateGhost.getInstance();
+        } else {
+            return this;
+        }
     }
-
+    
 }
 

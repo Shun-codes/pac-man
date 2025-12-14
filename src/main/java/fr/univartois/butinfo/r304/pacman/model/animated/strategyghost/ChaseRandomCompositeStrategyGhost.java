@@ -5,9 +5,11 @@
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.strategyghost;
 
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStrategyGhost;
 import fr.univartois.dpprocessor.designpatterns.composite.CompositeDesignPattern;
 
 /**
@@ -35,11 +37,6 @@ public class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
      */
     private int current = 0;
     
-    /**
-     * L'attribut speed pour le fantôme
-     */
-    private double speed;
-    
     /*
      * (non-Javadoc)
      *
@@ -65,7 +62,7 @@ public class ChaseRandomCompositeStrategyGhost implements IStrategyGhost {
      */
     @Override
     public void setSpeed(double speed) {
-        this.speed = speed;
+        //
     }
 
 }

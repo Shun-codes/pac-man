@@ -7,9 +7,12 @@
 
 package fr.univartois.butinfo.r304.pacman.model.animated;
 
+import fr.univartois.butinfo.r304.pacman.model.animated.strategyghost.ChaseStrategyGhost;
+import fr.univartois.butinfo.r304.pacman.model.animated.strategyghost.DumbStrategyGhost;
+import fr.univartois.butinfo.r304.pacman.model.animated.strategyghost.SurroundStrategyGhost;
 
 /**
- * Le type GhostColor
+ * La classe GhostColor enumère les différentes couleurs de fantômes et leurs stratégies de déplacement associées
  *
  * @author shun.lembrez
  *

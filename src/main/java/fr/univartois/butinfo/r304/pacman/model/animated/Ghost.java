@@ -10,13 +10,14 @@ package fr.univartois.butinfo.r304.pacman.model.animated;
 
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.ghoststate.InvulnerableStateGhost;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.strategy.StrategyParticipant;
 
 
 /**
- * Le type Ghost
+ * La classe Ghost qui représente les fantômes du jeu Pacman
  *
  * @author shun.lembrez
  *
@@ -51,7 +52,6 @@ public class Ghost extends AbstractAnimated{
      * @param yPosition la position sur l'axe vertical du famtôme
      * @param sprites les sprites du fantôme
      * @param color couleur du famtôme (RED, PINK, BLUE, ORANGE)
-     * @param stateGhost état du famtôme en question
      */
     public Ghost(PacmanGame game, double xPosition, double yPosition, Sprite sprites, GhostColor color) {
         super(game, xPosition, yPosition, sprites);

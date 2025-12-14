@@ -5,15 +5,17 @@
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.map;
+package fr.univartois.butinfo.r304.pacman.model.map.generator;
 
-import java.util.Iterator;
-
+import fr.univartois.butinfo.r304.pacman.model.map.Cell;
+import fr.univartois.butinfo.r304.pacman.model.map.GameMap;
+import fr.univartois.butinfo.r304.pacman.model.map.ICardGenerator;
+import fr.univartois.butinfo.r304.pacman.model.map.Wall;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.decorator.DecoratorDesignPattern;
 
 /**
- * Le type CardGeneratorDecorated
+ * La class CardGeneratorDecorated décore un générateur de carte en ajoutant des murs pour une map fixe que on a créer
  *
  * @author simon.cohet
  *

@@ -1,33 +1,36 @@
 /**
  * Ce fichier fait partie du projet projet-2025-2026.
  *
- * (c) 2025 shun.lembrez
+ * (c) 2025 simon.cohet
  * Tous droits réservés.
  */
 
-package fr.univartois.butinfo.r304.pacman.model.animated;
+package fr.univartois.butinfo.r304.pacman.model.animated.ghoststate;
 
 import fr.univartois.butinfo.r304.pacman.model.IAnimated;
 import fr.univartois.butinfo.r304.pacman.model.PacmanGame;
+import fr.univartois.butinfo.r304.pacman.model.animated.Ghost;
+import fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost;
+import fr.univartois.butinfo.r304.pacman.model.animated.strategyghost.ChaseStrategyGhost;
 import fr.univartois.butinfo.r304.pacman.view.Sprite;
 import fr.univartois.butinfo.r304.pacman.view.SpriteStore;
 import fr.univartois.dpprocessor.designpatterns.state.StateDesignPattern;
 import fr.univartois.dpprocessor.designpatterns.state.StateParticipant;
 
 /**
- * La classe VulnerableStateGhost qui gère quand le fantôme est dans l'état vulnerable soit mangable 
+ * La classe FleeingStateGhost , l'etat ou le fantôme fuit Pacman
  *
- * @author shun.lembrez
+ * @author simon.cohet
  *
  * @version 0.1.0
  */
-@StateDesignPattern(state = IStateGhost.class, participant = StateParticipant.IMPLEMENTATION)
-public class VulnerableStateGhost implements IStateGhost {
 
+@StateDesignPattern(state = IStateGhost.class, participant = StateParticipant.IMPLEMENTATION)
+public class FleeingStateGhost implements IStateGhost {
     /**
-     * L'attribut temps représente le temps restant avant de devenir presque vulnerable
+     * L'attribut temps représente le temps restant avant de redevenir vulnerable
      */
-    private double time = 10000;
+    private double time = 5000;
     
     /**
      * Les sprites du fantômes dans cet état
@@ -37,7 +40,7 @@ public class VulnerableStateGhost implements IStateGhost {
     /**
      * L'attribut SPEED vitesse pour les fantôme fuyant
      */
-    private static final double SPEED = -60;
+    private static final double SPEED = -80;
     
     /*
      * (non-Javadoc)
@@ -57,18 +60,19 @@ public class VulnerableStateGhost implements IStateGhost {
      */
     @Override
     public IStateGhost handleCollisionWithPacman(Ghost ghost, PacmanGame game) {
-        return new FleeingStateGhost();
+        // Rien, le fantôme fuis et est invulnérable
+        return this;
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost#getSpriteGhost(fr.univartois.butinfo.r304.pacman.model.animated.Ghost)
+     * @see fr.univartois.butinfo.r304.pacman.model.animated.IStateGhost#getSpriteGhost()
      */
     @Override
     public void getSpriteGhost(Ghost ghost) {
         if (spritesGhost == null) {
-            spritesGhost = SpriteStore.getInstance().getSprite("ghosts/hurt/1", "ghosts/hurt/2");
+            spritesGhost = SpriteStore.getInstance().getSprite("ghosts/afraid/1", "ghosts/afraid/2");
         }
         ghost.setSprite(spritesGhost);
     }
@@ -81,7 +85,7 @@ public class VulnerableStateGhost implements IStateGhost {
     @Override
     public IStateGhost nextState() {
         if (time <= 0) {
-            return new NearlyInvulnerableStateGhost();
+            return new InvulnerableStateGhost();
         } else {
             return this;
         }

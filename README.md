@@ -231,7 +231,6 @@ class PacmanGame {
     + moveDown() : void
     + moveLeft() : void
     + stopMoving() : void
-    - getCellOf(animated : IAnimated) : Cell
     + getCellAt(x : int, y : int) : Cell
     + addMoving(object : IAnimated) : void
     + addAnimated(object : IAnimated) : void
@@ -780,16 +779,16 @@ PacmanController o-- "1" PacmanGame
 | Ajout des bonus (invulnérable)                       |                        | oui        |  Simon                                        |
 | Ajout des bonus (fantomes lents)                     |                        | oui        |  Simon                                        |
 | Ajout des bonus multiples                            |                        | oui        |  Shun                                         |
-| Gestion des différents niveaux                       |                        | oui        |  Romain                                       |
+| Gestion des différents niveaux                       | AbstractFactory        | oui        |  Romain                                       |
 
 
 ### Jalon n°5 - TP n°7
 
 | Fonctionnalité                             | Patron de Conception ? | Terminée ? | Auteur(s)                                     |
 | ------------------------------------------ | ---------------------- | ---------- | --------------------------------------------- |
-| Correction des avertissements              |                        |            |                                               |
-| Correction des défauts sur *SonarQube*     |                        |            |                                               |
-| Rangement des classes en paquetages        |                        |            |                                               |
-| Modularisation du projet                   |                        |            |                                               |
+| Correction des avertissements              |                        | oui        | Tous                                          |
+| Correction des défauts sur *SonarQube*     |                        | oui        | Tous                                          |
+| Rangement des classes en paquetages        |                        | oui        | Tous                                          |
+| Modularisation du projet                   |                        | oui        | Shun                                          |
 _À venir..._
 
