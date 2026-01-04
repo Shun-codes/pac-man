@@ -1,8 +1,23 @@
 # _Pac-Man_ en JavaFX
 
-## Chef de projet :
+## Présentation du projet
 
-Timothée Gros
+Ce projet consiste en une implémentation du jeu **Pac‑Man** en **JavaFX**, réalisée dans un cadre pédagogique.  
+L’objectif principal était **d’intégrer et d’illustrer différents patrons de conception (Design Patterns)** au sein d’un jeu complet, tout en respectant une architecture claire, modulaire et extensible.
+
+Au fil des différents jalons, nous avons progressivement enrichi le jeu :
+
+- gestion des entités (Pac‑Man, fantômes, pac‑gommes)  
+- génération et amélioration du labyrinthe  
+- comportements dynamiques des fantômes  
+- gestion des états (vulnérabilité, invulnérabilité…)  
+- ajout de bonus  
+- modularisation et nettoyage du code  
+
+Le projet a été développé en équipe, chaque membre contribuant à des fonctionnalités précises, souvent liées à un patron de conception particulier.
+
+Pour développer votre propre version, vous pouvez créer une **divergence (Fork)** via le bouton `Fork` en haut à droite, puis inviter vos collaborateurs en tant que **Developers**.
+
 
 ## Description
 
