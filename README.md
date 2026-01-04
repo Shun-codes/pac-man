@@ -18,21 +18,15 @@ Le projet a été développé en équipe, chaque membre contribuant à des fonct
 
 Pour développer votre propre version, vous pouvez créer une **divergence (Fork)** via le bouton `Fork` en haut à droite, puis inviter vos collaborateurs en tant que **Developers**.
 
-
-## Description
-
-Ce projet fournit une implémentation de base du jeu _Pac-Man_ en _JavaFX_.
-Pour pouvoir développer votre propre implémentation de ce projet, vous devez
-en créer une **divergence** en cliquant sur le bouton `Fork` en haut à droite
-de cette page.
-
-Lorsque ce sera fait, vous pourrez inviter les membres de votre groupe en tant
-que _Developer_ pour vous permettre de travailler ensemble sur ce projet.
+---
 
 ## Consignes
 
-Vous pouvez retrouver ci-dessous les liens vers les sujets de TP vous guidant
-dans le développement de votre projet :
+Vous devez commencer à partir d’un **fork** du projet.
+
+Une fois le fork créé, vous pouvez inviter les membres de votre groupe en tant que _Developers_ afin de travailler ensemble sur votre implémentation.
+
+Vous trouverez ci-dessous les liens vers les sujets de TP guidant le développement du projet :
 
 - [Lancement du projet](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/tp/TP03)
 - [Des patrons de conception dans *Pac-Man* (1)](https://gitlab.univ-artois.fr/enseignements-rwa/modules/but-2/r3-04/tp/-/tree/main/tp/TP04)
